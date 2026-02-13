@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <title>Kasir Ponpes</title>
+    
+    <!-- Tailwind CSS (CDN) - Membutuhkan Internet -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Inconsolata -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+          --paper-width: 58mm;
+        }
+
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            background-color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- CSS Khusus Struk --- */
+        #receipt-preview-container {
+          width: var(--paper-width); 
+          background: white;
+          padding: 0;
+          margin: 0 auto;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .font-receipt {
+          font-family: 'Inconsolata', monospace;
+          font-size: 10pt; /* Sedikit diperbesar untuk HP */
+          line-height: 1.2;
+          color: black;
+        }
+
+        .dashed-line {
+          border-bottom: 1px dashed black;
+          margin: 6px 0;
+          width: 100%;
+        }
+
+        .receipt-row {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-bottom: 2px;
+        }
+
+        .receipt-truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        /* Input Styles Mobile Friendly */
+        input, select {
+            font-size: 16px !important; /* Mencegah zoom otomatis di iOS/Android */
+        }
+
+        /* --- Print Styles --- */
+        @media print {
+            @page { margin: 0; size: 58mm auto; }
+            body { visibility: hidden; background: white; }
+            #receipt-preview-container {
+                visibility: visible !important;
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 58mm !important;
+                box-shadow: none !important;
+            }
+            #receipt-preview-container * { visibility: visible !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen pb-20">
+
+    <!-- Header App -->
+    <div class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-10 no-print">
+        <div class="flex justify-between items-center max-w-lg mx-auto">
+            <h1 class="font-bold text-lg flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                Kasir Ponpes
+            </h1>
+            <div class="flex gap-2">
+                <button onclick="openHistory()" class="bg-blue-700 p-2 rounded hover:bg-blue-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </button>
+                <button onclick="resetTransaction()" class="bg-blue-700 p-2 rounded hover:bg-blue-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full max-w-lg mx-auto p-4 space-y-4 flex-grow no-print">
+        
+        <!-- Notifikasi -->
+        <div id="reprintBanner" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-3 text-sm text-yellow-700 rounded shadow-sm">
+            <b>Mode Cetak Ulang</b><br>Klik cetak untuk print data lama.
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-4">
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase">Nama Santri</label>
+                <input type="text" id="inputNama" class="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Nama..." oninput="updateState('santriName', this.value)">
+            </div>
+
+            <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-xs font-bold text-blue-800 uppercase">Pilih Barang</label>
+                    <button onclick="toggleProductForm()" class="text-xs text-blue-600 font-bold underline" id="btnToggleText">+ Menu Baru</button>
+                </div>
+
+                <!-- Form Tambah Produk -->
+                <div id="productForm" class="hidden mb-3 bg-white p-3 rounded border border-blue-200">
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" id="newProductName" placeholder="Nama" class="w-2/3 p-2 text-sm border rounded">
+                        <input type="number" id="newProductPrice" placeholder="Rp" class="w-1/3 p-2 text-sm border rounded" inputmode="numeric">
+                    </div>
+                    <button onclick="addNewProduct()" class="w-full bg-blue-500 text-white py-2 rounded text-sm font-bold">Simpan</button>
+                </div>
+
+                <div class="flex gap-2">
+                    <select id="productSelect" class="flex-1 p-3 border rounded-lg text-sm bg-white" onchange="updateState('selectedItem', this.value)"></select>
+                    
+                    <button id="btnDeleteProduct" onclick="deleteSelectedProduct()" class="hidden bg-red-100 text-red-500 px-3 rounded-lg border border-red-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    </button>
+                    <button id="btnAddItem" onclick="addItemToCart()" disabled class="bg-gray-300 text-white px-4 rounded-lg font-bold text-lg disabled:opacity-50 transition">
+                        +
+                    </button>
+                </div>
+            </div>
+
+            <!-- Keranjang -->
+            <div id="cartListContainer" class="hidden space-y-2"></div>
+
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase">Bayar (Rp)</label>
+                <input type="tel" id="inputBayar" inputmode="numeric" class="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-green-500 outline-none font-mono text-lg" placeholder="0" oninput="updateState('paymentInput', this.value)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Button Print -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t no-print z-20">
+        <div class="max-w-lg mx-auto">
+             <button id="btnPrint" onclick="handlePrint()" class="w-full bg-green-600 active:bg-green-700 text-white py-3 rounded-xl font-bold shadow-lg flex justify-center items-center gap-2 text-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                <span id="btnPrintText">CETAK STRUK</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hidden Preview Area (Only visible on print) -->
+    <!-- Kita sembunyikan dari tampilan UI HP agar tidak penuh, tapi tetap ada di DOM -->
+    <div class="hidden">
+        <div id="receipt-preview-container">
+            <div id="receipt-area" class="px-2 font-receipt pt-4 pb-8">
+                <div class="text-center mb-2">
+                    <div style="font-size: 1.2em; font-weight: bold;">Kantor Penitipan</div>
+                    <div>Ponpes Wali Barokah</div>
+                    <div>082143358005</div>
+                </div>
+                <div class="dashed-line"></div>
+                
+                <div class="w-full text-left">
+                    <div class="receipt-row">
+                        <span>Nama:</span>
+                        <span id="receiptNama" class="text-right receipt-truncate">-</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>No:</span>
+                        <span id="receiptNo" class="text-right"></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Tgl:</span>
+                        <span id="receiptDate" class="text-right"></span>
+                    </div>
+                </div>
+                <div class="dashed-line"></div>
+                
+                <div id="receiptItems" class="w-full"></div>
+                <div class="dashed-line"></div>
+
+                <div class="w-full">
+                    <div class="receipt-row font-bold">
+                        <span>Total</span>
+                        <span id="receiptTotal">Rp0</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Bayar</span>
+                        <span id="receiptBayar">Rp0</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Kembali</span>
+                        <span id="receiptKembali">Rp0</span>
+                    </div>
+                </div>
+                <div class="dashed-line"></div>
+                <div class="text-center mt-2">
+                    <div>Alhamdulillah</div>
+                    <div>Jazakumullohu Khoiro</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RIWAYAT -->
+    <div id="historyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-end sm:items-center z-50 no-print backdrop-blur-sm">
+        <div class="bg-white rounded-t-2xl sm:rounded-xl w-full max-w-lg h-[80vh] flex flex-col p-4 shadow-2xl animate-slide-up">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="text-lg font-bold text-gray-800">Riwayat Transaksi</h3>
+                <button onclick="closeHistory()" class="bg-gray-100 p-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto">
+                <div id="historyListBody" class="space-y-2"></div>
+                <div id="emptyHistoryMsg" class="text-center py-10 text-gray-400 hidden">Belum ada riwayat.</div>
+            </div>
+            <div class="mt-4 pt-2 border-t flex justify-between items-center">
+                <button onclick="clearAllHistory()" class="text-red-500 text-sm font-bold">Hapus Semua</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data & State
+        let state = { name: '', id: '', date: '', cart: [], pay: '', selected: '', isHistory: false };
+        let products = [
+            { id: 1, name: 'Kalung', price: 10000 }, { id: 2, name: 'Gelang', price: 5000 },
+            { id: 3, name: 'Cincin', price: 15000 }, { id: 4, name: 'Jam', price: 50000 },
+            { id: 5, name: 'Bros', price: 3000 }, { id: 6, name: 'Peniti', price: 1000 }
+        ];
+
+        // Helpers
+        const formatRupiah = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n).replace(/\s/g, '');
+        const genId = () => 'TRX' + Math.floor(Math.random() * 10000);
+        const getDate = () => { const d = new Date(); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; };
+
+        // Logic
+        function updateState(key, val) {
+            if (key === 'santriName') state.name = val;
+            if (key === 'paymentInput') state.pay = val;
+            if (key === 'selectedItem') {
+                state.selected = val;
+                const btnAdd = document.getElementById('btnAddItem');
+                const btnDel = document.getElementById('btnDeleteProduct');
+                if (val) {
+                    btnAdd.removeAttribute('disabled');
+                    btnAdd.classList.remove('bg-gray-300');
+                    btnAdd.classList.add('bg-blue-600');
+                    btnDel.classList.remove('hidden');
+                } else {
+                    btnAdd.setAttribute('disabled', 'true');
+                    btnAdd.classList.add('bg-gray-300');
+                    btnAdd.classList.remove('bg-blue-600');
+                    btnDel.classList.add('hidden');
+                }
+            }
+            render();
+        }
+
+        function resetTransaction() {
+            state = { ...state, isHistory: false, id: genId(), date: getDate(), cart: [], pay: '', name: '', selected: '' };
+            document.getElementById('inputNama').value = '';
+            document.getElementById('inputBayar').value = '';
+            document.getElementById('productSelect').value = '';
+            document.getElementById('reprintBanner').classList.add('hidden');
+            document.getElementById('btnPrintText').innerText = "CETAK STRUK";
+            updateState('selectedItem', '');
+            render();
+        }
+
+        function toggleProductForm() {
+            const form = document.getElementById('productForm');
+            form.classList.toggle('hidden');
+            document.getElementById('btnToggleText').innerText = form.classList.contains('hidden') ? '+ Menu Baru' : 'Tutup';
+        }
+
+        function addNewProduct() {
+            const name = document.getElementById('newProductName').value;
+            const price = document.getElementById('newProductPrice').value;
+            if (name && price) {
+                products.push({ id: Date.now(), name, price: parseInt(price) });
+                document.getElementById('newProductName').value = '';
+                document.getElementById('newProductPrice').value = '';
+                toggleProductForm();
+                renderOptions();
+            }
+        }
+
+        function deleteSelectedProduct() {
+            if(confirm('Hapus menu ini?')) {
+                products = products.filter(p => p.id != state.selected);
+                document.getElementById('productSelect').value = '';
+                updateState('selectedItem', '');
+                renderOptions();
+            }
+        }
+
+        function addItemToCart() {
+            const p = products.find(i => i.id == state.selected);
+            if (p) {
+                const exist = state.cart.find(c => c.id == p.id);
+                if (exist) exist.qty++; else state.cart.push({ ...p, qty: 1 });
+                render();
+            }
+        }
+
+        function removeItem(id) {
+            state.cart = state.cart.filter(c => c.id !== id);
+            render();
+        }
+
+        function handlePrint() {
+            if (!state.isHistory && state.cart.length > 0) {
+                const hist = JSON.parse(localStorage.getItem('pos_history') || '[]');
+                // Cek duplikat sederhana
+                if (!hist.length || hist[0].id !== state.id) {
+                    hist.unshift({ ...state, timestamp: Date.now() });
+                    localStorage.setItem('pos_history', JSON.stringify(hist));
+                }
+            }
+            renderReceipt(); // Pastikan struk terupdate
+            setTimeout(() => window.print(), 300);
+        }
+
+        // History
+        function openHistory() {
+            document.getElementById('historyModal').classList.remove('hidden');
+            const hist = JSON.parse(localStorage.getItem('pos_history') || '[]');
+            const cont = document.getElementById('historyListBody');
+            cont.innerHTML = '';
+            if (!hist.length) document.getElementById('emptyHistoryMsg').classList.remove('hidden');
+            else {
+                document.getElementById('emptyHistoryMsg').classList.add('hidden');
+                hist.forEach(h => {
+                    const tot = h.cart.reduce((a,b)=>a+(b.price*b.qty),0);
+                    const el = document.createElement('div');
+                    el.className = 'bg-gray-50 p-3 rounded border flex justify-between items-center';
+                    el.innerHTML = `
+                        <div>
+                            <div class="text-xs text-gray-500">${h.date} - ${h.id}</div>
+                            <div class="font-bold">${h.name || 'Tanpa Nama'}</div>
+                            <div class="text-green-600 font-bold">${formatRupiah(tot)}</div>
+                        </div>
+                        <button onclick='loadHistory("${h.id}")' class="bg-blue-100 text-blue-600 px-3 py-1 rounded text-sm font-bold">Pilih</button>
+                    `;
+                    cont.appendChild(el);
+                });
+            }
+        }
+        
+        function closeHistory() { document.getElementById('historyModal').classList.add('hidden'); }
+        function clearAllHistory() { if(confirm('Hapus semua?')) { localStorage.removeItem('pos_history'); openHistory(); } }
+        
+        window.loadHistory = function(id) {
+            const hist = JSON.parse(localStorage.getItem('pos_history') || '[]');
+            const item = hist.find(i => i.id === id);
+            if(item) {
+                state = { ...item, isHistory: true };
+                document.getElementById('inputNama').value = state.name;
+                document.getElementById('inputBayar').value = state.pay;
+                document.getElementById('reprintBanner').classList.remove('hidden');
+                document.getElementById('btnPrintText').innerText = "CETAK ULANG";
+                closeHistory();
+                render();
+            }
+        }
+
+        // Rendering
+        function renderOptions() {
+            const sel = document.getElementById('productSelect');
+            const cur = sel.value;
+            sel.innerHTML = '<option value="">-- Pilih Barang --</option>';
+            products.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = `${p.name} - ${formatRupiah(p.price)}`;
+                sel.appendChild(opt);
+            });
+            sel.value = cur;
+        }
+
+        function renderReceipt() {
+            document.getElementById('receiptNama').textContent = state.name || '-';
+            document.getElementById('receiptNo').textContent = state.id;
+            document.getElementById('receiptDate').textContent = state.date;
+            const items = document.getElementById('receiptItems');
+            items.innerHTML = '';
+            let total = 0;
+            state.cart.forEach(c => {
+                const sub = c.price * c.qty;
+                total += sub;
+                items.innerHTML += `<div class="mb-1"><div class="font-bold">${c.name}</div><div class="receipt-row"><span>${c.qty} x ${formatRupiah(c.price)}</span><span>${formatRupiah(sub)}</span></div></div>`;
+            });
+            if(!state.cart.length) items.innerHTML = '<div class="text-center italic text-xs py-2">-- kosong --</div>';
+            
+            const pay = parseInt(state.pay) || total;
+            document.getElementById('receiptTotal').textContent = formatRupiah(total);
+            document.getElementById('receiptBayar').textContent = formatRupiah(pay);
+            document.getElementById('receiptKembali').textContent = formatRupiah(pay - total);
+        }
+
+        function render() {
+            // Render Cart UI
+            const cCont = document.getElementById('cartListContainer');
+            cCont.innerHTML = '';
+            if (state.cart.length) {
+                cCont.classList.remove('hidden');
+                state.cart.forEach(c => {
+                    const el = document.createElement('div');
+                    el.className = 'flex justify-between items-center bg-blue-50 p-2 rounded border border-blue-100';
+                    el.innerHTML = `
+                        <div>
+                            <div class="font-bold text-sm text-blue-900">${c.name}</div>
+                            <div class="text-xs text-gray-500">${c.qty} x ${formatRupiah(c.price)}</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-blue-700">${formatRupiah(c.price * c.qty)}</span>
+                            <button onclick="removeItem(${c.id})" class="text-red-500 bg-white rounded-full p-1 shadow hover:bg-red-50">✕</button>
+                        </div>
+                    `;
+                    cCont.appendChild(el);
+                });
+            } else {
+                cCont.classList.add('hidden');
+            }
+            renderReceipt();
+        }
+
+        window.onload = () => { renderOptions(); resetTransaction(); };
+    </script>
+</body>
+</html>
