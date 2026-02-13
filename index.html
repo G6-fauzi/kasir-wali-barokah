@@ -42,11 +42,37 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
-        /* --- Print Styles --- */
+        /* --- CSS Khusus Struk (Format ASLI) --- */
         #print-area-wrapper { display: none; }
-        .font-receipt { font-family: 'Inconsolata', monospace; font-size: 10pt; line-height: 1.2; }
-        .dashed-line { border-bottom: 1px dashed black; margin: 6px 0; width: 100%; }
-        .receipt-row { display: flex; justify-content: space-between; width: 100%; margin-bottom: 2px; }
+        
+        .font-receipt {
+          font-family: 'Inconsolata', 'Courier New', Courier, monospace;
+          font-size: 9pt; 
+          line-height: 1.2;
+          color: black;
+          font-weight: 400;
+        }
+
+        .dashed-line {
+          border-bottom: 1px dashed black;
+          margin: 6px 0;
+          width: 100%;
+        }
+
+        .receipt-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          width: 100%;
+          margin-bottom: 2px;
+        }
+
+        .receipt-truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
 
         @media print {
             @page { margin: 0; size: 58mm auto; }
@@ -55,9 +81,19 @@
                 display: block !important; 
                 position: absolute; left: 0; top: 0; width: 100%; 
             }
-            #receipt-preview-container { 
-                width: 100% !important; 
-                padding-bottom: 5mm; 
+            #receipt-preview-container {
+                visibility: visible !important;
+                position: fixed !important; 
+                left: 0 !important;
+                top: 0 !important;
+                width: 58mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+            #receipt-area {
+                padding: 0 2mm !important; /* Padding cetak asli */
+                width: 100% !important;
             }
         }
     </style>
@@ -234,38 +270,56 @@
         </div>
     </div>
 
-    <!-- HIDDEN PRINT AREA -->
+    <!-- HIDDEN PRINT AREA (DIBUAT SAMA PERSIS DENGAN FILE ASLI) -->
     <div id="print-area-wrapper">
         <div id="receipt-preview-container">
-            <div id="receipt-area" class="px-2 font-receipt pt-4 pb-8">
-                <div class="text-center mb-2">
-                    <div style="font-size: 1.2em; font-weight: bold;">Kantor Penitipan</div>
+            <div id="receipt-area" class="px-2 font-receipt">
+                <!-- 1. Header -->
+                <div class="text-center mb-2 pt-8">
+                    <div style="font-size: 1.1em;">Kantor Penitipan</div>
                     <div>Ponpes Wali Barokah</div>
                     <div>082143358005</div>
                 </div>
                 <div class="dashed-line"></div>
                 
-                <div class="w-full text-left">
+                <!-- 2 & 3. Info Transaksi -->
+                <div class="w-full text-left" style="font-size: 0.95em;">
                     <div class="receipt-row">
-                        <span>Nama:</span>
-                        <span id="receiptNama" class="text-right receipt-truncate">-</span>
+                        <span class="whitespace-nowrap mr-2">Atas Nama</span>
+                        <span id="receiptNama" class="text-right receipt-truncate flex-1">-</span>
                     </div>
                     <div class="receipt-row">
-                        <span>No:</span>
+                        <span>No</span>
                         <span id="receiptNo" class="text-right"></span>
                     </div>
                     <div class="receipt-row">
-                        <span>Tgl:</span>
+                        <span>Tanggal</span>
                         <span id="receiptDate" class="text-right"></span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Kasir</span>
+                        <span class="text-right">Kantor Penitipan</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Pembayaran</span>
+                        <span class="text-right">Tunai</span>
                     </div>
                 </div>
                 <div class="dashed-line"></div>
                 
-                <div id="receiptItems" class="w-full"></div>
+                <!-- 4. List Barang -->
+                <div id="receiptItems" class="w-full">
+                    <div class="text-center italic text-[0.8em] py-2">.. item kosong ..</div>
+                </div>
                 <div class="dashed-line"></div>
 
+                <!-- 5. Total & Footer -->
                 <div class="w-full">
-                    <div class="receipt-row font-bold">
+                    <div class="receipt-row">
+                        <span>Total Pesanan</span>
+                        <span id="receiptTotalPesanan">Rp0</span>
+                    </div>
+                    <div class="receipt-row mb-2">
                         <span>Total</span>
                         <span id="receiptTotal">Rp0</span>
                     </div>
@@ -279,7 +333,7 @@
                     </div>
                 </div>
                 <div class="dashed-line"></div>
-                <div class="text-center mt-2">
+                <div class="text-center mt-2 pb-12" style="font-size: 0.9em;">
                     <div>Alhamdulillah</div>
                     <div>Jazakumullohu Khoiro</div>
                 </div>
@@ -308,8 +362,13 @@
 
         // --- Helpers ---
         const formatRupiah = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n).replace(/\s/g, '');
-        const genId = () => 'TRX' + Math.floor(Math.random() * 10000);
-        const getDate = () => { const d = new Date(); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; };
+        const genId = () => {
+             const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+             let prefix = "";
+             for (let i = 0; i < 3; i++) prefix += letters.charAt(Math.floor(Math.random() * letters.length));
+             return `${prefix}${Math.floor(10000000000 + Math.random() * 90000000000)}`;
+        };
+        const getDate = () => { const now = new Date(); const pad = (n) => String(n).padStart(2, '0'); return `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`; };
         
         // --- Core Logic ---
         function updateState(key, val) {
@@ -496,28 +555,30 @@
             }
         }
 
-        // --- Receipt Logic (Hidden) ---
+        // --- Receipt Logic (UPDATED TO MATCH ORIGINAL FILE) ---
         function renderReceiptData() {
             document.getElementById('receiptNama').textContent = state.name || '-';
             document.getElementById('receiptNo').textContent = state.id;
             document.getElementById('receiptDate').textContent = state.date;
             
-            const itemsCont = document.getElementById('receiptItems');
-            itemsCont.innerHTML = '';
-            
-            state.cart.forEach(c => {
-                 itemsCont.innerHTML += `
-                    <div class="mb-1">
-                        <div class="font-bold">${c.name}</div>
-                        <div class="receipt-row">
-                            <span>${c.qty} x ${formatRupiah(c.price)}</span>
-                            <span>${formatRupiah(c.qty * c.price)}</span>
-                        </div>
-                    </div>`;
-            });
-
             const total = getCartTotal();
-            const pay = parseInt(state.pay) || total; // Default to exact if empty on print
+            const pay = parseInt(state.pay) || total;
+
+            const itemCont = document.getElementById('receiptItems');
+            if(state.cart.length===0) itemCont.innerHTML='<div class="text-center italic text-[0.8em] py-2">.. item kosong ..</div>';
+            else {
+                itemCont.innerHTML='';
+                state.cart.forEach(i => {
+                    const d=document.createElement('div'); d.className='mb-1 w-full';
+                    d.innerHTML=`<div class="receipt-truncate">${i.name}</div><div class="receipt-row"><span>${formatRupiah(i.price)} x ${i.qty}</span><span>${formatRupiah(i.price * i.qty)}</span></div>`;
+                    itemCont.appendChild(d);
+                });
+            }
+            
+            // Elemen ini ada di format asli
+            if(document.getElementById('receiptTotalPesanan')) 
+                document.getElementById('receiptTotalPesanan').textContent = formatRupiah(total);
+            
             document.getElementById('receiptTotal').textContent = formatRupiah(total);
             document.getElementById('receiptBayar').textContent = formatRupiah(pay);
             document.getElementById('receiptKembali').textContent = formatRupiah(pay - total);
