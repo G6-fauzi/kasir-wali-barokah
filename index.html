@@ -27,13 +27,14 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: monospace; /* System font monospace */
             background-color: var(--bg);
             color: var(--text);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         /* --- UTILITIES --- */
@@ -54,6 +55,7 @@
         .text-lg { font-size: 1.125rem; }
         .opacity-0 { opacity: 0; pointer-events: none; }
         .translate-y-full { transform: translateY(100%); }
+        .text-emerald { color: var(--primary); }
         
         /* --- COMPONENTS --- */
         /* Header */
@@ -169,27 +171,16 @@
 
         .btn-delete-card {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 24px;
-            height: 24px;
-            background: #fee2e2;
-            color: #ef4444;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            border: 1px solid #fecaca;
-            z-index: 10;
+            top: 5px; right: 5px; width: 24px; height: 24px;
+            background: #fee2e2; color: #ef4444; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; border: 1px solid #fecaca; z-index: 10;
         }
 
         /* Bottom Bar */
         .bottom-bar {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            z-index: 30;
-            transition: transform 0.3s;
+            position: fixed; bottom: 0; left: 0; right: 0;
+            z-index: 30; transition: transform 0.3s;
         }
         
         .summary-card {
@@ -203,30 +194,21 @@
         }
         
         .circle-badge {
-            background: rgba(0,0,0,0.3);
-            width: 2.5rem; height: 2.5rem;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold;
+            background: rgba(0,0,0,0.3); width: 2.5rem; height: 2.5rem;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
         }
 
         /* Modal */
         .modal-overlay {
             position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 40;
+            background: rgba(0,0,0,0.6); z-index: 40;
             display: flex; align-items: flex-end; justify-content: center;
-            backdrop-filter: blur(2px);
-            transition: opacity 0.3s;
+            backdrop-filter: blur(2px); transition: opacity 0.3s;
         }
         .modal-content {
-            background: var(--surface);
-            width: 100%; max-width: 600px;
-            max-height: 85vh;
-            border-radius: 1.5rem 1.5rem 0 0;
-            display: flex; flex-direction: column;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
+            background: var(--surface); width: 100%; max-width: 600px; max-height: 85vh;
+            border-radius: 1.5rem 1.5rem 0 0; display: flex; flex-direction: column;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2); transition: transform 0.3s;
         }
         
         .modal-header { padding: 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -237,10 +219,8 @@
         .pay-input-wrapper { position: relative; }
         .pay-currency { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: bold; }
         .pay-input {
-            width: 100%; padding: 1rem 1rem 1rem 3rem;
-            font-size: 1.25rem; font-weight: bold;
-            border: 1px solid var(--border); border-radius: 0.75rem;
-            background: var(--bg); outline: none;
+            width: 100%; padding: 1rem 1rem 1rem 3rem; font-size: 1.25rem; font-weight: bold;
+            border: 1px solid var(--border); border-radius: 0.75rem; background: var(--bg); outline: none;
         }
         .pay-input:focus { border-color: var(--primary); background: white; }
 
@@ -250,63 +230,37 @@
         .btn-exact { background: var(--primary-light); color: var(--primary-dark); border-color: var(--primary-light); }
 
         .btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 0.75rem;
-            font-size: 1.125rem;
-            font-weight: bold;
+            width: 100%; padding: 1rem; background: var(--primary); color: white; border: none;
+            border-radius: 0.75rem; font-size: 1.125rem; font-weight: bold;
             display: flex; justify-content: center; align-items: center; gap: 0.5rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
+            cursor: pointer; box-shadow: var(--shadow);
         }
         .btn-primary:active { transform: scale(0.98); }
         .btn-primary:disabled { opacity: 0.5; pointer-events: none; background: #94a3b8; }
+        .btn-primary.connected { background: #0ea5e9; } /* Blue for connected */
 
         .change-display {
-            background: #0f172a; color: white;
-            padding: 1rem; border-radius: 0.75rem;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 1rem;
+            background: #0f172a; color: white; padding: 1rem; border-radius: 0.75rem;
+            display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;
         }
 
         /* --- PRINT AREA (STRUK) --- */
         #print-area-wrapper { display: none; }
         
         .font-receipt {
-          font-family: monospace; /* Font bawaan sistem */
-          font-size: 11pt;        /* UPDATE: Font lebih besar */
-          line-height: 1.2;
-          color: black;
-          font-weight: bold;
+          font-family: monospace; font-size: 11pt; line-height: 1.2; color: black; font-weight: bold;
         }
         .receipt-row { display: flex; justify-content: space-between; width: 100%; margin-bottom: 2px; }
         .dashed-line { border-bottom: 1px dashed black; margin: 6px 0; width: 100%; }
         .receipt-truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; }
 
         @media print {
-            @page { 
-                margin: 0;       /* UPDATE: Margin nol mutlak */
-                size: 58mm auto; 
-            }
+            @page { margin: 0; size: 58mm auto; }
             body > * { display: none !important; }
-            
-            /* UPDATE: Reset body margin/padding for print */
-            html, body {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100%;
-            }
-
-            #print-area-wrapper { 
-                display: block !important; 
-                position: absolute; left: 0; top: 0; width: 100%; 
-            }
+            html, body { margin: 0 !important; padding: 0 !important; width: 100%; }
+            #print-area-wrapper { display: block !important; position: absolute; left: 0; top: 0; width: 100%; }
             #receipt-preview-container {
-                visibility: visible !important;
-                position: fixed !important; left: 0 !important; top: 0 !important;
+                visibility: visible !important; position: fixed !important; left: 0 !important; top: 0 !important;
                 width: 100% !important; margin: 0 !important; padding: 0 !important;
             }
             #receipt-area { padding: 0 !important; width: 100% !important; }
@@ -319,6 +273,9 @@
         /* Settings Modal Specific */
         .radio-label { display: flex; align-items: center; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; margin-bottom: 0.5rem; cursor: pointer; }
         .radio-label:active { background-color: var(--bg); }
+        
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-left: auto; }
+        .status-dot.online { background: #10b981; box-shadow: 0 0 5px #10b981; }
     </style>
 </head>
 <body>
@@ -351,18 +308,16 @@
     <main class="main-scroll">
         <div class="container">
             
-            <!-- Notifikasi -->
             <div id="reprintBanner" class="banner banner-amber hidden animate-up">
                 <b>Mode Cetak Ulang</b>
                 <span>ID Transaksi tetap.</span>
             </div>
             
              <div id="printModeBanner" class="banner banner-blue hidden animate-up">
-                <span>Mode: <b>RawBT Direct</b></span>
+                <span id="printModeText">Mode: <b>RawBT Direct</b></span>
                 <button onclick="openSettings()" style="background:none; border:none; color:inherit; text-decoration: underline;">Ubah</button>
             </div>
 
-            <!-- Input Santri -->
             <div class="input-group">
                 <div class="input-icon">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -370,15 +325,12 @@
                 <input type="text" id="inputNama" class="clean-input" placeholder="Masukkan Nama Santri..." oninput="updateState('santriName', this.value)">
             </div>
 
-            <!-- Product Grid -->
             <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.75rem;">
                 <h2 class="text-xs font-bold" style="color:var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Menu Barang</h2>
                 <button onclick="openAddProductModal()" style="font-size: 0.75rem; font-weight: bold; color: var(--primary); background: var(--primary-light); border: none; padding: 0.3rem 0.6rem; border-radius: 0.5rem;">+ Custom</button>
             </div>
             
-            <div class="grid" id="productGrid">
-                <!-- Javascript will fill this -->
-            </div>
+            <div class="grid" id="productGrid"></div>
         </div>
     </main>
 
@@ -467,20 +419,40 @@
                     <input type="radio" name="printMode" value="browser" id="radioBrowser">
                     <div style="margin-left: 0.75rem;">
                         <span class="block font-bold">Bawaan Browser</span>
-                        <span class="block text-xs text-muted">Dialog print Chrome/System</span>
+                        <span class="block text-xs text-muted">Free. Menggunakan System Dialog.</span>
                     </div>
                 </label>
 
                 <label class="radio-label" onclick="setPrintMode('rawbt')">
                     <input type="radio" name="printMode" value="rawbt" id="radioRawbt">
                     <div style="margin-left: 0.75rem;">
-                        <span class="block font-bold">RawBT (Direct)</span>
-                        <span class="block text-xs text-muted">Langsung ke Printer (Cepat)</span>
+                        <span class="block font-bold">RawBT (App Bridge)</span>
+                        <span class="block text-xs text-muted">Via Aplikasi RawBT (Berbayar/Watermark).</span>
                     </div>
                 </label>
+
+                <!-- NEW OPTION -->
+                <label class="radio-label" onclick="setPrintMode('web_ble')">
+                    <input type="radio" name="printMode" value="web_ble" id="radioWebBle">
+                    <div style="margin-left: 0.75rem; flex:1;">
+                        <div class="flex justify-between items-center">
+                            <span class="block font-bold text-emerald">Web Bluetooth (Beta)</span>
+                            <div id="bleStatusDot" class="status-dot"></div>
+                        </div>
+                        <span class="block text-xs text-muted">Langsung tanpa aplikasi. (Perlu HTTPS & Printer BLE).</span>
+                    </div>
+                </label>
+                
+                <div id="bleConnectPanel" class="hidden" style="margin-top: 1rem; padding: 1rem; background: #f0fdf4; border-radius: 0.5rem;">
+                    <button onclick="connectBLE()" class="btn-primary" style="font-size: 0.875rem; padding: 0.5rem;">
+                        Cari & Sambungkan Printer
+                    </button>
+                    <p class="text-xs text-muted text-center" style="margin-top: 0.5rem;">Pastikan Bluetooth HP nyala.</p>
+                </div>
+
             </div>
             <div class="modal-footer">
-                <button onclick="closeSettings()" class="btn-primary">Simpan</button>
+                <button onclick="closeSettings()" class="btn-primary">Tutup</button>
             </div>
         </div>
     </div>
@@ -502,7 +474,7 @@
         </div>
     </div>
 
-    <!-- STRUK PREVIEW (HIDDEN) -->
+    <!-- STRUK PREVIEW (HIDDEN FOR LOGIC) -->
     <div id="print-area-wrapper">
         <div id="receipt-preview-container">
             <div id="receipt-area" class="font-receipt">
@@ -545,7 +517,11 @@
         // State
         let state = { name: '', id: '', date: '', cart: [], pay: '', isHistory: false, printMode: 'browser' };
         
-        // Products (Inline styles for avatar colors)
+        // Web Bluetooth State
+        let bluetoothDevice;
+        let printCharacteristic;
+        
+        // Products
         let products = [
             { id: 1, name: 'Kalung', price: 10000, bg: '#fce7f3', color: '#be185d' }, 
             { id: 2, name: 'Gelang', price: 5000, bg: '#f3e8ff', color: '#7e22ce' },
@@ -591,13 +567,10 @@
             }
         }
         
-        // FUNGSI BARU: HAPUS MENU
         function deleteProduct(e, id) {
-            e.stopPropagation(); // Biar gak nambah ke keranjang pas diklik
+            e.stopPropagation();
             if(confirm('Hapus menu ini?')) {
-                // Hapus dari list produk
                 products = products.filter(p => p.id !== id);
-                // Hapus juga dari keranjang jika ada
                 state.cart = state.cart.filter(c => c.id !== id);
                 renderUI();
             }
@@ -613,7 +586,25 @@
             renderReceiptData();
             
             const banner = document.getElementById('printModeBanner');
-            if(state.printMode === 'rawbt') banner.classList.remove('hidden'); else banner.classList.add('hidden');
+            const bannerText = document.getElementById('printModeText');
+            
+            if(state.printMode === 'browser') {
+                banner.classList.add('hidden');
+            } else if(state.printMode === 'rawbt') {
+                banner.classList.remove('hidden');
+                bannerText.innerHTML = "Mode: <b>RawBT Direct</b>";
+            } else if(state.printMode === 'web_ble') {
+                banner.classList.remove('hidden');
+                if(printCharacteristic) {
+                    bannerText.innerHTML = "Mode: <b>Bluetooth Connected</b>";
+                    banner.classList.replace('banner-blue', 'banner-amber'); // Greenish look handled by CSS override if needed
+                    banner.style.background = "#dcfce7"; banner.style.borderColor="#86efac"; banner.style.color="#166534";
+                } else {
+                    bannerText.innerHTML = "Mode: <b>Web Bluetooth</b> (Belum Konek)";
+                    banner.style.background = ""; banner.style.borderColor=""; banner.style.color="";
+                    banner.classList.replace('banner-amber', 'banner-blue');
+                }
+            }
         }
 
         function renderProductGrid() {
@@ -705,36 +696,27 @@
 
         function calculateChange() {
             const total = getCartTotal();
-            const rawPay = state.pay; // Bisa kosong
-            const pay = rawPay === '' ? total : parseInt(rawPay); // Default ke total kalau kosong
+            const rawPay = state.pay; 
+            const pay = rawPay === '' ? total : parseInt(rawPay);
             const change = pay - total;
             const el = document.getElementById('checkoutChange');
             const btn = document.getElementById('btnFinalPrint');
             
-            // Logika baru: Jika kosong, dianggap Uang Pas, tombol NYALA
             if (rawPay === '') {
-                el.innerText = "Uang Pas";
-                el.style.color = "var(--text-muted)";
-                btn.disabled = false;
+                el.innerText = "Uang Pas"; el.style.color = "var(--text-muted)"; btn.disabled = false;
             } else if (change < 0) {
-                el.innerText = "Kurang " + formatRupiah(Math.abs(change));
-                el.style.color = "#fca5a5";
-                btn.disabled = true;
+                el.innerText = "Kurang " + formatRupiah(Math.abs(change)); el.style.color = "#fca5a5"; btn.disabled = true;
             } else {
-                el.innerText = formatRupiah(change);
-                el.style.color = "white";
-                btn.disabled = false;
+                el.innerText = formatRupiah(change); el.style.color = "white"; btn.disabled = false;
             }
         }
 
-        // --- Receipt ---
         function renderReceiptData() {
             document.getElementById('receiptNama').textContent = state.name || '-';
             document.getElementById('receiptNo').textContent = state.id;
             document.getElementById('receiptDate').textContent = state.date;
             
             const total = getCartTotal();
-            // Default ke total (uang pas) saat print jika kosong
             const pay = (!state.pay) ? total : parseInt(state.pay);
             const itemCont = document.getElementById('receiptItems');
             
@@ -751,7 +733,7 @@
             document.getElementById('receiptKembali').textContent = formatRupiah(pay - total);
         }
 
-        // --- Printing ---
+        // --- Printing Handler ---
         function handlePrint() {
             if (state.cart.length === 0) return alert("Keranjang kosong!");
             if (!state.isHistory) {
@@ -762,19 +744,138 @@
                 }
             }
             renderReceiptData();
-            if (state.printMode === 'rawbt') printViaRawBT(); else setTimeout(() => window.print(), 300);
+            
+            if (state.printMode === 'rawbt') {
+                printViaRawBT();
+            } else if (state.printMode === 'web_ble') {
+                if(!printCharacteristic) {
+                    alert("Printer belum terhubung! Silakan masuk ke pengaturan dan klik 'Cari Printer' terlebih dahulu.");
+                    openSettings();
+                } else {
+                    printViaWebBLE();
+                }
+            } else {
+                setTimeout(() => window.print(), 300);
+            }
         }
 
+        // --- RawBT Method ---
         function b64EncodeUnicode(str) {
             return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) { return String.fromCharCode('0x' + p1); }));
         }
 
         function printViaRawBT() {
             const receiptContent = document.getElementById('receipt-area').innerHTML;
-            // UPDATE: CSS disesuaikan untuk RawBT (margin 0, font 11pt)
             const css = `body { margin:0; padding:0; font-family:monospace; font-size:11pt; font-weight:bold; width:58mm; } .text-center { text-align:center; } .receipt-row { display:flex; justify-content:space-between; margin-bottom:2px; } .dashed-line { border-bottom:1px dashed black; margin:6px 0; } .receipt-truncate { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60%; }`;
             const fullHtml = `<html><head><style>${css}</style></head><body>${receiptContent}</body></html>`;
             window.location.href = "rawbt:data:text/html;base64," + b64EncodeUnicode(fullHtml);
+        }
+
+        // --- WEB BLUETOOTH API (DIRECT PRINT) ---
+        async function connectBLE() {
+            try {
+                // Request device - Generic filter to find most thermal printers
+                bluetoothDevice = await navigator.bluetooth.requestDevice({
+                    acceptAllDevices: true,
+                    optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb'] // Common Print Service
+                });
+
+                const server = await bluetoothDevice.gatt.connect();
+                // Try to get the common print service
+                const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
+                // Try to get the write characteristic
+                printCharacteristic = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb');
+                
+                // Update UI
+                document.getElementById('bleStatusDot').classList.add('online');
+                renderUI();
+                alert("Berhasil terhubung ke " + bluetoothDevice.name);
+                closeSettings();
+            } catch (error) {
+                console.error(error);
+                alert("Gagal konek: " + error + ". \nPastikan Bluetooth nyala, printer adalah tipe BLE/Dual Mode, dan website menggunakan HTTPS.");
+            }
+        }
+
+        async function printViaWebBLE() {
+            // ESC/POS Commands
+            const ESC = '\x1B';
+            const GS = '\x1D';
+            const INIT = ESC + '@';
+            const ALIGN_CENTER = ESC + 'a' + '\x01';
+            const ALIGN_LEFT = ESC + 'a' + '\x00';
+            const ALIGN_RIGHT = ESC + 'a' + '\x02';
+            const BOLD_ON = ESC + 'E' + '\x01';
+            const BOLD_OFF = ESC + 'E' + '\x00';
+            const FEED = '\x0A';
+
+            let data = INIT;
+            
+            // Helper to add text
+            const addText = (text, align = 'left', bold = false) => {
+                let cmd = (align === 'center' ? ALIGN_CENTER : (align === 'right' ? ALIGN_RIGHT : ALIGN_LEFT));
+                cmd += (bold ? BOLD_ON : BOLD_OFF);
+                cmd += text + FEED;
+                return cmd;
+            };
+
+            // Build Receipt Manually using Text Commands
+            data += addText("Kantor Penitipan", 'center', true);
+            data += addText("Ponpes Wali Barokah", 'center', true);
+            data += addText("082143358005", 'center', false);
+            data += addText("--------------------------------", 'center');
+            
+            // Info
+            data += addText("Nama : " + (state.name || '-'), 'left');
+            data += addText("No   : " + state.id, 'left');
+            data += addText("Tgl  : " + state.date, 'left');
+            data += addText("--------------------------------", 'center');
+
+            // Items (Manual column spacing)
+            state.cart.forEach(item => {
+                data += addText(item.name, 'left', true);
+                // Simple spacing hack
+                let line = `${formatRupiah(item.price)} x ${item.qty}`;
+                let total = formatRupiah(item.price * item.qty);
+                // Pad with spaces (approximate)
+                let space = 32 - line.length - total.length;
+                if(space < 1) space = 1;
+                data += line + " ".repeat(space) + total + FEED;
+            });
+
+            data += addText("--------------------------------", 'center');
+            
+            const total = formatRupiah(getCartTotal());
+            const pay = formatRupiah((!state.pay) ? getCartTotal() : parseInt(state.pay));
+            const change = formatRupiah(((!state.pay) ? getCartTotal() : parseInt(state.pay)) - getCartTotal());
+
+            // Totals
+            let tLine = "Total"; let tSpace = 32 - tLine.length - total.length;
+            data += BOLD_ON + tLine + " ".repeat(tSpace > 0 ? tSpace : 1) + total + FEED + BOLD_OFF;
+            
+            let pLine = "Bayar"; let pSpace = 32 - pLine.length - pay.length;
+            data += pLine + " ".repeat(pSpace > 0 ? pSpace : 1) + pay + FEED;
+            
+            let cLine = "Kembali"; let cSpace = 32 - cLine.length - change.length;
+            data += cLine + " ".repeat(cSpace > 0 ? cSpace : 1) + change + FEED;
+
+            data += addText("--------------------------------", 'center');
+            data += FEED;
+            data += addText("Alhamdulillah", 'center');
+            data += addText("Jazakumullohu Khoiro", 'center');
+            data += FEED + FEED + FEED; // Feed paper
+
+            // Encode to Uint8Array
+            const encoder = new TextEncoder();
+            const commandChunks = encoder.encode(data);
+            
+            // Send to printer
+            // Chunking might be needed for large data, but receipts are usually small
+            try {
+                await printCharacteristic.writeValue(commandChunks);
+            } catch (e) {
+                alert("Error saat mengirim data print: " + e);
+            }
         }
 
         // --- Modal Control ---
@@ -803,10 +904,19 @@
 
         function openSettings() {
             const m = document.getElementById('settingsModal'); m.classList.remove('hidden'); m.classList.add('flex');
-            document.getElementById(state.printMode === 'browser' ? 'radioBrowser' : 'radioRawbt').checked = true;
+            document.getElementById(state.printMode === 'browser' ? 'radioBrowser' : (state.printMode === 'rawbt' ? 'radioRawbt' : 'radioWebBle')).checked = true;
+            
+            // Toggle BLE panel
+            if(state.printMode === 'web_ble') document.getElementById('bleConnectPanel').classList.remove('hidden');
+            else document.getElementById('bleConnectPanel').classList.add('hidden');
         }
         function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); document.getElementById('settingsModal').classList.remove('flex'); }
-        function setPrintMode(m) { state.printMode = m; localStorage.setItem('pos_print_mode', m); renderUI(); }
+        function setPrintMode(m) { 
+            state.printMode = m; localStorage.setItem('pos_print_mode', m); 
+            if(m === 'web_ble') document.getElementById('bleConnectPanel').classList.remove('hidden');
+            else document.getElementById('bleConnectPanel').classList.add('hidden');
+            renderUI(); 
+        }
 
         function openHistory() {
             const m = document.getElementById('historyModal'); const l = document.getElementById('historyListBody');
@@ -845,6 +955,11 @@
             document.getElementById('trxIdDisplay').innerText = `ID: ${state.id}`;
             document.getElementById('reprintBanner').classList.add('hidden');
             closeCheckout(); renderUI();
+            
+            // Check previous BLE connection if possible (Browser security usually prevents auto-reconnect without user gesture)
+            if(state.printMode === 'web_ble') {
+                // UI update only
+            }
         }
 
         window.onload = resetTransaction;
