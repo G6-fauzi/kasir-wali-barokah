@@ -198,30 +198,45 @@
         .dashed-line { border-bottom: 1px dashed black; margin: 6px 0; width: 100%; }
         .receipt-truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; }
         
-        @media print {
+       @media print {
             /* 1. Reset Halaman */
-            @page { margin: 0; size: 58mm auto; }
+            @page { 
+                margin: 0; 
+                size: 58mm auto; 
+            }
+            
             html, body { 
                 margin: 0 !important; 
                 padding: 0 !important;
                 background-color: #ffffff !important;
-                width: 100%;
-                height: 100%;
+                width: 58mm !important;
+                height: auto !important; /* KUNCI 1: Ubah 100% jadi auto */
+                display: block !important; /* KUNCI 2: Matikan mode flexbox dari UI */
+                overflow: visible !important; /* KUNCI 3: Biarkan konten mengalir ke bawah */
             }
 
             /* 2. Sembunyikan Aplikasi UI */
-            #app-ui { display: none !important; }
+            #app-ui { 
+                display: none !important; 
+            }
 
             /* 3. Tampilkan Area Print */
             #print-area-wrapper { 
                 display: block !important;
-                position: absolute; 
-                left: 0; top: 0; 
-                width: 58mm; /* Sesuaikan lebar kertas */
-                padding: 0; /* No Padding as requested originally */
+                position: relative !important; /* KUNCI 4: Jangan gunakan absolute */
+                width: 100%; 
+                margin: 0;
+                padding: 0;
                 background-color: white;
                 color: black !important;
             }
+            
+            /* Pastikan elemen print terlihat */
+            #print-area-wrapper * { 
+                visibility: visible !important; 
+                color: black !important;
+            }
+        }
             
             /* Pastikan elemen print terlihat */
             #print-area-wrapper * { 
@@ -808,3 +823,4 @@
     </script>
 </body>
 </html>
+
