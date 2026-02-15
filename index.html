@@ -184,8 +184,19 @@
         .animate-up { animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* --- PRINT STYLING (THE FIX) --- */
+        /* --- PRINT STYLING (RESTORED ORIGINAL STYLE) --- */
         #print-area-wrapper { display: none; }
+        
+        .font-receipt {
+          font-family: monospace; /* Font bawaan sistem */
+          font-size: 11pt;        /* Original size */
+          line-height: 1.2;
+          color: black;
+          font-weight: bold;
+        }
+        .receipt-row { display: flex; justify-content: space-between; width: 100%; margin-bottom: 2px; }
+        .dashed-line { border-bottom: 1px dashed black; margin: 6px 0; width: 100%; }
+        .receipt-truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; }
         
         @media print {
             /* 1. Reset Halaman */
@@ -207,12 +218,9 @@
                 position: absolute; 
                 left: 0; top: 0; 
                 width: 58mm; /* Sesuaikan lebar kertas */
-                padding: 10px 5px; /* Sedikit padding agar tidak terpotong */
+                padding: 0; /* No Padding as requested originally */
                 background-color: white;
                 color: black !important;
-                font-family: 'Courier New', monospace; 
-                font-size: 10pt; 
-                line-height: 1.2;
             }
             
             /* Pastikan elemen print terlihat */
@@ -220,15 +228,12 @@
                 visibility: visible !important; 
                 color: black !important;
             }
-
-            .dashed { border-bottom: 1px dashed black; width: 100%; margin: 5px 0; }
-            .row { display: flex; justify-content: space-between; }
         }
     </style>
 </head>
 <body>
 
-    <!-- WRAPPER APLIKASI UTAMA (Akan disembunyikan saat print) -->
+    <!-- WRAPPER APLIKASI UTAMA -->
     <div id="app-ui">
         
         <!-- TOP BAR -->
@@ -386,26 +391,41 @@
     </div> 
     <!-- END OF APP UI -->
 
-    <!-- PRINT PREVIEW (Berada di LUAR #app-ui agar bisa di-toggle display-nya) -->
+    <!-- PRINT PREVIEW (RESTORED ORIGINAL LAYOUT) -->
     <div id="print-area-wrapper">
-        <div class="text-center">
-            <b style="font-size: 1.2em;">KANTOR PENITIPAN</b><br>
-            Ponpes Wali Barokah<br>
-            082143358005
-        </div>
-        <div class="dashed"></div>
-        <div class="row"><span>Tanggal:</span><span id="pDate"></span></div>
-        <div class="row"><span>ID:</span><span id="pId"></span></div>
-        <div class="row"><span>Nama:</span><span id="pName"></span></div>
-        <div class="dashed"></div>
-        <div id="pItems"></div>
-        <div class="dashed"></div>
-        <div class="row"><b>Total:</b><b id="pTotal"></b></div>
-        <div class="row"><span>Bayar:</span><span id="pPay"></span></div>
-        <div class="row"><span>Kembali:</span><span id="pChange"></span></div>
-        <div class="dashed"></div>
-        <div class="text-center" style="margin-top:10px;">
-            Alhamdulillah<br>Jazakumullohu Khoiro
+        <div id="receipt-preview-container">
+            <div id="receipt-area" class="font-receipt">
+                <div class="text-center" style="margin-bottom: 5px; padding-top: 10px;">
+                    <div style="font-size: 1.1em;">Kantor Penitipan</div>
+                    <div>Ponpes Wali Barokah</div>
+                    <div>082143358005</div>
+                </div>
+                <div class="dashed-line"></div>
+                
+                <div class="receipt-row">
+                    <span>Atas Nama</span>
+                    <span id="receiptNama" class="receipt-truncate">-</span>
+                </div>
+                <div class="receipt-row"><span>No</span><span id="receiptNo"></span></div>
+                <div class="receipt-row"><span>Tanggal</span><span id="receiptDate"></span></div>
+                <div class="receipt-row"><span>Kasir</span><span>Kantor Penitipan</span></div>
+                <div class="receipt-row"><span>Pembayaran</span><span>Tunai</span></div>
+                
+                <div class="dashed-line"></div>
+                <div id="receiptItems" class="w-full"></div>
+                <div class="dashed-line"></div>
+
+                <div class="receipt-row"><span>Total Pesanan</span><span id="receiptTotalPesanan">Rp0</span></div>
+                <div class="receipt-row" style="margin-bottom: 5px;"><span>Total</span><span id="receiptTotal">Rp0</span></div>
+                <div class="receipt-row"><span>Bayar</span><span id="receiptBayar">Rp0</span></div>
+                <div class="receipt-row"><span>Kembali</span><span id="receiptKembali">Rp0</span></div>
+                
+                <div class="dashed-line"></div>
+                <div class="text-center" style="margin-top: 5px; padding-bottom: 20px; font-size: 0.9em;">
+                    <div>Alhamdulillah</div>
+                    <div>Jazakumullohu Khoiro</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -456,12 +476,13 @@
             { id: 6, name: 'Peniti', price: 1000, bg: '#f1f5f9', color: '#334155' }
         ];
 
-        const formatRp = (n) => 'Rp' + new Intl.NumberFormat('id-ID').format(n);
+        const formatRp = (n) => 'Rp' + new Intl.NumberFormat('id-ID').format(n).replace(/\s/g, ''); // Compact format
         const genId = () => {
              const ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
              let p = ""; for (let i = 0; i < 3; i++) p += ch.charAt(Math.floor(Math.random() * ch.length));
              return `${p}${Math.floor(10000000000 + Math.random() * 90000000000)}`;
         };
+        const getDate = () => { const now = new Date(); const pad = (n) => String(n).padStart(2, '0'); return `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`; };
 
         // --- CORE FUNCTIONS ---
         function init() {
@@ -472,7 +493,7 @@
         }
 
         function resetTrans() {
-            state.name = ''; state.id = genId(); state.date = new Date().toLocaleString('id-ID');
+            state.name = ''; state.id = genId(); state.date = getDate();
             state.cart = []; state.pay = '';
             document.getElementById('inputNama').value = '';
             document.getElementById('inputBayar').value = '';
@@ -672,20 +693,24 @@
             let t = getTotals();
             
             if (state.printMode === 'browser') {
-                // 1. ISI DATA KE PREVIEW HTML
-                document.getElementById('pDate').innerText = state.date;
-                document.getElementById('pId').innerText = state.id;
-                document.getElementById('pName').innerText = state.name || '-';
-                document.getElementById('pTotal').innerText = formatRp(t.total);
-                document.getElementById('pPay').innerText = formatRp(t.pay);
-                document.getElementById('pChange').innerText = formatRp(t.change);
+                // 1. ISI DATA KE PREVIEW HTML (MAPPING KE STRUKTUR LAMA)
+                document.getElementById('receiptNama').textContent = state.name || '-';
+                document.getElementById('receiptNo').textContent = state.id;
+                document.getElementById('receiptDate').textContent = state.date;
                 
-                let itemHtml = '';
-                state.cart.forEach(x => {
-                    itemHtml += `<div class="row"><span>${x.name}</span><span>${formatRp(x.price*x.qty)}</span></div>`;
-                    itemHtml += `<div class="text-xs text-muted" style="margin-bottom:2px">${x.qty} x ${formatRp(x.price)}</div>`;
-                });
-                document.getElementById('pItems').innerHTML = itemHtml;
+                const itemCont = document.getElementById('receiptItems');
+                if(state.cart.length===0) itemCont.innerHTML='<div class="text-center" style="font-size:0.8em; padding:5px 0;">.. kosong ..</div>';
+                else {
+                    itemCont.innerHTML='';
+                    state.cart.forEach(i => {
+                        itemCont.innerHTML += `<div style="margin-bottom:2px;"><div class="receipt-truncate">${i.name}</div><div class="receipt-row"><span>${formatRp(i.price)} x ${i.qty}</span><span>${formatRp(i.price * i.qty)}</span></div></div>`;
+                    });
+                }
+
+                document.getElementById('receiptTotalPesanan').textContent = formatRp(t.total);
+                document.getElementById('receiptTotal').textContent = formatRp(t.total);
+                document.getElementById('receiptBayar').textContent = formatRp(t.pay);
+                document.getElementById('receiptKembali').textContent = formatRp(t.change);
                 
                 // 2. TUTUP MODAL DULU AGAR TIDAK MENGGANGGU
                 closeCheckout();
@@ -706,26 +731,29 @@
                 }
 
                 try {
-                    // GENERATE BYTES ESC/POS
+                    // GENERATE BYTES ESC/POS (SESUAIKAN DENGAN FORMAT STRUK LAMA)
                     const esc = new EscPos();
-                    esc.init().align('center').bold(true).text("KANTOR PENITIPAN").feed()
+                    esc.init().align('center').bold(true).text("Kantor Penitipan").feed()
                        .text("Ponpes Wali Barokah").feed().bold(false)
                        .text("082143358005").feed().line()
                        .align('left')
-                       .row("ID", state.id)
-                       .row("Tgl", state.date.split(' ')[0]) // Just date
-                       .row("Nama", state.name || '-')
+                       .row("Atas Nama", state.name || '-')
+                       .row("No", state.id)
+                       .row("Tanggal", state.date)
+                       .row("Kasir", "Kantor Penitipan")
+                       .row("Pembayaran", "Tunai")
                        .line();
                        
                     state.cart.forEach(c => {
                         esc.text(c.name).feed()
-                           .row(`${c.qty} x ${c.price}`, c.qty*c.price);
+                           .row(`${formatRp(c.price)} x ${c.qty}`, formatRp(c.price*c.qty));
                     });
                     
                     esc.line().align('right')
-                       .bold(true).row("TOTAL", t.total).bold(false)
-                       .row("Bayar", t.pay)
-                       .row("Kembali", t.change)
+                       .row("Total Pesanan", formatRp(t.total))
+                       .bold(true).row("Total", formatRp(t.total)).bold(false)
+                       .row("Bayar", formatRp(t.pay))
+                       .row("Kembali", formatRp(t.change))
                        .line().align('center')
                        .text("Alhamdulillah").feed()
                        .text("Jazakumullohu Khoiro").feed(3) // Feed paper
