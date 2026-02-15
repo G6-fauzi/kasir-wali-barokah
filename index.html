@@ -184,18 +184,43 @@
         .animate-up { animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* Print Hidden Area */
+        /* --- PRINT STYLING (THE FIX) --- */
         #print-area-wrapper { display: none; }
         
         @media print {
+            /* 1. Reset Halaman */
             @page { margin: 0; size: 58mm auto; }
-            body * { visibility: hidden; }
-            #print-area-wrapper, #print-area-wrapper * { visibility: visible; }
-            #print-area-wrapper { 
-                position: absolute; left: 0; top: 0; width: 58mm; 
-                font-family: 'Courier New', monospace; font-size: 10pt; color: black; line-height: 1.2;
-                padding-bottom: 5mm; 
+            html, body { 
+                margin: 0 !important; 
+                padding: 0 !important;
+                background-color: #ffffff !important;
+                width: 100%;
+                height: 100%;
             }
+
+            /* 2. Sembunyikan Aplikasi UI */
+            #app-ui { display: none !important; }
+
+            /* 3. Tampilkan Area Print */
+            #print-area-wrapper { 
+                display: block !important;
+                position: absolute; 
+                left: 0; top: 0; 
+                width: 58mm; /* Sesuaikan lebar kertas */
+                padding: 10px 5px; /* Sedikit padding agar tidak terpotong */
+                background-color: white;
+                color: black !important;
+                font-family: 'Courier New', monospace; 
+                font-size: 10pt; 
+                line-height: 1.2;
+            }
+            
+            /* Pastikan elemen print terlihat */
+            #print-area-wrapper * { 
+                visibility: visible !important; 
+                color: black !important;
+            }
+
             .dashed { border-bottom: 1px dashed black; width: 100%; margin: 5px 0; }
             .row { display: flex; justify-content: space-between; }
         }
@@ -203,160 +228,165 @@
 </head>
 <body>
 
-    <!-- TOP BAR -->
-    <header class="header">
-        <div class="flex items-center gap-3">
-            <div class="icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            </div>
-            <div>
-                <h1 class="font-bold text-lg" style="line-height: 1;">Kasir Ponpes</h1>
-                <p class="text-xs text-muted" id="trxIdDisplay">ID: ...</p>
-            </div>
-        </div>
-        <div class="flex gap-2">
-            <button onclick="openSettings()" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
-            <button onclick="resetTrans()" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></button>
-        </div>
-    </header>
-
-    <!-- MAIN CONTENT -->
-    <main class="main-scroll">
-        <div class="container">
-            <!-- Print Status Banner -->
-            <div class="banner banner-blue" id="printerStatusBanner" onclick="openSettings()">
+    <!-- WRAPPER APLIKASI UTAMA (Akan disembunyikan saat print) -->
+    <div id="app-ui">
+        
+        <!-- TOP BAR -->
+        <header class="header">
+            <div class="flex items-center gap-3">
+                <div class="icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </div>
                 <div>
-                    <span id="btIndicator" class="status-dot dot-red"></span>
-                    <span id="printerStatusText">Printer: Belum Terhubung</span>
+                    <h1 class="font-bold text-lg" style="line-height: 1;">Kasir Ponpes</h1>
+                    <p class="text-xs text-muted" id="trxIdDisplay">ID: ...</p>
                 </div>
-                <b>Set</b>
             </div>
+            <div class="flex gap-2">
+                <button onclick="openSettings()" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button onclick="resetTrans()" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></button>
+            </div>
+        </header>
 
-            <div class="input-group">
-                <div class="input-icon">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <!-- MAIN CONTENT -->
+        <main class="main-scroll">
+            <div class="container">
+                <!-- Print Status Banner -->
+                <div class="banner banner-blue" id="printerStatusBanner" onclick="openSettings()">
+                    <div>
+                        <span id="btIndicator" class="status-dot dot-red"></span>
+                        <span id="printerStatusText">Printer: Belum Terhubung</span>
+                    </div>
+                    <b>Set</b>
                 </div>
-                <input type="text" id="inputNama" class="clean-input" placeholder="Nama Santri..." oninput="updateState('name', this.value)">
-            </div>
 
-            <div class="flex justify-between items-end mb-3">
-                <h2 class="text-xs font-bold text-muted uppercase tracking-wider">Menu Barang</h2>
-                <button onclick="openAddProductModal()" class="text-xs font-bold text-primary bg-emerald-100 px-3 py-1 rounded">+ Custom</button>
-            </div>
-            
-            <div class="grid" id="productGrid"></div>
-        </div>
-    </main>
+                <div class="input-group">
+                    <div class="input-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <input type="text" id="inputNama" class="clean-input" placeholder="Nama Santri..." oninput="updateState('name', this.value)">
+                </div>
 
-    <!-- BOTTOM BAR -->
-    <div id="bottomBar" class="bottom-bar translate-y-full">
-        <div class="container">
-            <div class="summary-card" onclick="openCheckout()">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="circle-badge" id="cartCount">0</div>
-                        <div class="flex-col">
-                            <span class="text-xs opacity-80">Total Tagihan</span>
-                            <span class="font-bold text-lg" id="cartTotal">Rp0</span>
+                <div class="flex justify-between items-end mb-3">
+                    <h2 class="text-xs font-bold text-muted uppercase tracking-wider">Menu Barang</h2>
+                    <button onclick="openAddProductModal()" class="text-xs font-bold text-primary bg-emerald-100 px-3 py-1 rounded">+ Custom</button>
+                </div>
+                
+                <div class="grid" id="productGrid"></div>
+            </div>
+        </main>
+
+        <!-- BOTTOM BAR -->
+        <div id="bottomBar" class="bottom-bar translate-y-full">
+            <div class="container">
+                <div class="summary-card" onclick="openCheckout()">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="circle-badge" id="cartCount">0</div>
+                            <div class="flex-col">
+                                <span class="text-xs opacity-80">Total Tagihan</span>
+                                <span class="font-bold text-lg" id="cartTotal">Rp0</span>
+                            </div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: bold;">
+                            Bayar &rarr;
                         </div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: bold;">
-                        Bayar &rarr;
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- MODALS -->
-    <!-- Checkout -->
-    <div id="checkoutModal" class="modal-overlay hidden opacity-0">
-        <div class="modal-content translate-y-full" id="checkoutContent">
-            <div class="modal-header">
-                <h3 class="font-bold text-lg">Pembayaran</h3>
-                <button onclick="closeCheckout()" class="icon-btn">✕</button>
-            </div>
-            <div class="modal-body">
-                <div id="cartList" class="mb-4"></div>
-                <div style="border-top: 1px dashed var(--border); margin: 1rem 0;"></div>
-                
-                <label class="text-sm font-bold text-muted">Uang Diterima</label>
-                <div class="pay-input-wrapper">
-                    <span class="pay-currency">Rp</span>
-                    <input type="tel" id="inputBayar" class="pay-input" placeholder="0 (Uang Pas)" oninput="updateState('pay', this.value)">
+        <!-- MODALS -->
+        <!-- Checkout -->
+        <div id="checkoutModal" class="modal-overlay hidden opacity-0">
+            <div class="modal-content translate-y-full" id="checkoutContent">
+                <div class="modal-header">
+                    <h3 class="font-bold text-lg">Pembayaran</h3>
+                    <button onclick="closeCheckout()" class="icon-btn">✕</button>
                 </div>
-                <div class="quick-money-grid">
-                    <button onclick="setPayment('exact')" class="btn-quick btn-exact">Uang Pas</button>
-                    <button onclick="setPayment(10000)" class="btn-quick">10k</button>
-                    <button onclick="setPayment(20000)" class="btn-quick">20k</button>
-                    <button onclick="setPayment(50000)" class="btn-quick">50k</button>
-                </div>
-                <div class="flex justify-between items-center mt-4 bg-slate-800 text-white p-4 rounded-xl">
-                    <span class="text-sm opacity-70">Kembalian</span>
-                    <span class="font-bold text-xl" id="changeDisplay">Rp0</span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="btnPrint" onclick="handlePrint()" class="btn-primary">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v8H6z"></path></svg>
-                    CETAK STRUK
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings (Printer) -->
-    <div id="settingsModal" class="modal-overlay hidden" style="align-items: center;">
-        <div class="modal-content animate-up" style="max-width: 350px; border-radius: 1rem;">
-            <div class="modal-header">
-                <h3 class="font-bold">Pengaturan Printer</h3>
-                <button onclick="closeSettings()" class="icon-btn">✕</button>
-            </div>
-            <div class="modal-body">
-                <p class="text-xs text-muted mb-3">Pilih metode koneksi printer:</p>
-                
-                <label class="radio-label" id="opt-bt" onclick="selectPrintMode('bluetooth')">
-                    <input type="radio" name="pmode" value="bluetooth">
-                    <div>
-                        <div class="font-bold">Bluetooth Direct (Recommended)</div>
-                        <div class="text-xs text-muted">Koneksi langsung, potong otomatis, tanpa dialog.</div>
+                <div class="modal-body">
+                    <div id="cartList" class="mb-4"></div>
+                    <div style="border-top: 1px dashed var(--border); margin: 1rem 0;"></div>
+                    
+                    <label class="text-sm font-bold text-muted">Uang Diterima</label>
+                    <div class="pay-input-wrapper">
+                        <span class="pay-currency">Rp</span>
+                        <input type="tel" id="inputBayar" class="pay-input" placeholder="0 (Uang Pas)" oninput="updateState('pay', this.value)">
                     </div>
-                </label>
-
-                <label class="radio-label" id="opt-browser" onclick="selectPrintMode('browser')">
-                    <input type="radio" name="pmode" value="browser">
-                    <div>
-                        <div class="font-bold">System Print</div>
-                        <div class="text-xs text-muted">Menggunakan Print Service bawaan Android/Browser.</div>
+                    <div class="quick-money-grid">
+                        <button onclick="setPayment('exact')" class="btn-quick btn-exact">Uang Pas</button>
+                        <button onclick="setPayment(10000)" class="btn-quick">10k</button>
+                        <button onclick="setPayment(20000)" class="btn-quick">20k</button>
+                        <button onclick="setPayment(50000)" class="btn-quick">50k</button>
                     </div>
-                </label>
-
-                <div id="btConnectArea" class="hidden mt-3 p-3 bg-yellow-50 rounded border border-yellow-200">
-                    <p class="text-xs text-yellow-800 mb-2">Pastikan Bluetooth aktif & printer sudah dipairing.</p>
-                    <button onclick="connectBluetooth()" class="w-full bg-blue-600 text-white font-bold py-2 rounded text-sm">
-                        Cari & Sambungkan Printer
+                    <div class="flex justify-between items-center mt-4 bg-slate-800 text-white p-4 rounded-xl">
+                        <span class="text-sm opacity-70">Kembalian</span>
+                        <span class="font-bold text-xl" id="changeDisplay">Rp0</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnPrint" onclick="handlePrint()" class="btn-primary">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v8H6z"></path></svg>
+                        CETAK STRUK
                     </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Add Product -->
-    <div id="productModal" class="modal-overlay hidden" style="align-items: center;">
-        <div class="modal-content animate-up" style="max-width: 320px; border-radius: 1rem;">
-            <div class="modal-body">
-                <h3 class="font-bold text-lg mb-4">Tambah Menu</h3>
-                <input type="text" id="newProdName" placeholder="Nama Barang" class="clean-input border border-slate-200 rounded mb-2">
-                <input type="number" id="newProdPrice" placeholder="Harga" class="clean-input border border-slate-200 rounded">
-            </div>
-            <div class="modal-footer flex gap-2">
-                <button onclick="closeProductModal()" class="btn-primary" style="background:#fff; color:#333; border:1px solid #ccc; box-shadow:none;">Batal</button>
-                <button onclick="addNewProduct()" class="btn-primary">Simpan</button>
+        <!-- Settings (Printer) -->
+        <div id="settingsModal" class="modal-overlay hidden" style="align-items: center;">
+            <div class="modal-content animate-up" style="max-width: 350px; border-radius: 1rem;">
+                <div class="modal-header">
+                    <h3 class="font-bold">Pengaturan Printer</h3>
+                    <button onclick="closeSettings()" class="icon-btn">✕</button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-xs text-muted mb-3">Pilih metode koneksi printer:</p>
+                    
+                    <label class="radio-label" id="opt-bt" onclick="selectPrintMode('bluetooth')">
+                        <input type="radio" name="pmode" value="bluetooth">
+                        <div>
+                            <div class="font-bold">Bluetooth Direct (Recommended)</div>
+                            <div class="text-xs text-muted">Koneksi langsung, potong otomatis, tanpa dialog.</div>
+                        </div>
+                    </label>
+
+                    <label class="radio-label" id="opt-browser" onclick="selectPrintMode('browser')">
+                        <input type="radio" name="pmode" value="browser">
+                        <div>
+                            <div class="font-bold">System Print</div>
+                            <div class="text-xs text-muted">Menggunakan Print Service bawaan Android/Browser.</div>
+                        </div>
+                    </label>
+
+                    <div id="btConnectArea" class="hidden mt-3 p-3 bg-yellow-50 rounded border border-yellow-200">
+                        <p class="text-xs text-yellow-800 mb-2">Pastikan Bluetooth aktif & printer sudah dipairing.</p>
+                        <button onclick="connectBluetooth()" class="w-full bg-blue-600 text-white font-bold py-2 rounded text-sm">
+                            Cari & Sambungkan Printer
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- PRINT PREVIEW (For Browser Mode) -->
+        <!-- Add Product -->
+        <div id="productModal" class="modal-overlay hidden" style="align-items: center;">
+            <div class="modal-content animate-up" style="max-width: 320px; border-radius: 1rem;">
+                <div class="modal-body">
+                    <h3 class="font-bold text-lg mb-4">Tambah Menu</h3>
+                    <input type="text" id="newProdName" placeholder="Nama Barang" class="clean-input border border-slate-200 rounded mb-2">
+                    <input type="number" id="newProdPrice" placeholder="Harga" class="clean-input border border-slate-200 rounded">
+                </div>
+                <div class="modal-footer flex gap-2">
+                    <button onclick="closeProductModal()" class="btn-primary" style="background:#fff; color:#333; border:1px solid #ccc; box-shadow:none;">Batal</button>
+                    <button onclick="addNewProduct()" class="btn-primary">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- END OF APP UI -->
+
+    <!-- PRINT PREVIEW (Berada di LUAR #app-ui agar bisa di-toggle display-nya) -->
     <div id="print-area-wrapper">
         <div class="text-center">
             <b style="font-size: 1.2em;">KANTOR PENITIPAN</b><br>
@@ -438,7 +468,6 @@
             resetTrans();
             renderGrid();
             selectPrintMode(state.printMode);
-            // Cek jika sudah pernah connect bluetooth sebelumnya (limited capability in web)
             updatePrinterStatus();
         }
 
@@ -643,7 +672,7 @@
             let t = getTotals();
             
             if (state.printMode === 'browser') {
-                // RENDER HTML PREVIEW
+                // 1. ISI DATA KE PREVIEW HTML
                 document.getElementById('pDate').innerText = state.date;
                 document.getElementById('pId').innerText = state.id;
                 document.getElementById('pName').innerText = state.name || '-';
@@ -658,7 +687,16 @@
                 });
                 document.getElementById('pItems').innerHTML = itemHtml;
                 
-                window.print();
+                // 2. TUTUP MODAL DULU AGAR TIDAK MENGGANGGU
+                closeCheckout();
+
+                // 3. BERI JEDA SEDIKIT AGAR DOM TER-RENDER SEMPURNA
+                setTimeout(() => {
+                    window.print();
+                    
+                    // Reset setelah print dialog ditutup (opsional)
+                    setTimeout(() => resetTrans(), 1000);
+                }, 300);
             } 
             else if (state.printMode === 'bluetooth') {
                 if (!state.btChar) {
@@ -694,14 +732,14 @@
                        .cut(); // Cut paper
                        
                     await state.btChar.writeValue(esc.getUint8Array());
+                    
+                    // Reset setelah print sukses
+                    closeCheckout();
+                    resetTrans();
                 } catch (e) {
                     alert("Gagal print bluetooth: " + e.message);
                 }
             }
-            
-            // Simpan riwayat jika perlu (opsional)
-            closeCheckout();
-            resetTrans();
         }
 
         // --- MODAL CONTROLS ---
