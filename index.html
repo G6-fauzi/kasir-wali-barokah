@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#047857">
-    <title>Kasir Ponpes Lite</title>
+    <title>Kasir Ponpes Pro</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMjAiIGZpbGw9IiMxNjY1MzQiLz48Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjIwMCIgZmlsbD0iIzE1ODAzZCIvPjxwYXRoIGQ9Ik0yNTYgMTAwQzE5MCAxMDAgMTMwIDE0MCAxMTAgMjEwSDQwMkMzODIgMTQwIDMyMiAxMDAgMjU2IDEwMFoiIGZpbGw9IndoaXRlIi8+PHJlY3QgeD0iMTEwIiB5PSIyMTAiIHdpZHRoPSIyOTIiIGhlaWdodD0iNDAiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTE2NiAyMzBIMzQ2VjM4MEwzMTYgMzYwTDI4NiAzODBMMjU2IDM2MEwyMjYgMzgweTE5NiAzNjBMMTY2IDM4MFYyMzBaIiBmaWxsPSIjZmVmY2U4Ii8+PHJlY3QgeD0iMTk2IiB5PSIyNjAiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjY2E4YTA0Ii8+PHJlY3QgeD0iMTk2IiB5PSIyOTAiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIiIHJ4PSI2IiBmaWxsPSIjZWFiMzA4Ii8+PHJlY3QgeD0iMTk2IiB5PSIzMjAiIHdpZHRoPSI4MCIgaGVpZ2h0PSIxMiIgcng9IjYiIGZpbGw9IiNlYWIzMDgiLz48Y2lyY2xlIGN4PSIzNTYiIGN5PSIzNTYiIHI9IjUwIiBmaWxsPSIjMjJjNTVlIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjgiLz48cGF0aCBkPSJNMzM2IDM1NkwzNDggMzY4TDM3NiAzNDAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
@@ -15,16 +15,15 @@
             --primary: #047857; /* Emerald 700 */
             --primary-light: #d1fae5;
             --primary-dark: #064e3b;
-            --bg: #f8fafc;
+            --bg: #f1f5f9;
             --surface: #ffffff;
-            --text: #1e293b;
+            --text: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --paper-width: 58mm;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -42,7 +41,6 @@
         .flex-col { flex-direction: column; }
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }
-        .justify-center { justify-content: center; }
         .gap-2 { gap: 0.5rem; }
         .gap-3 { gap: 0.75rem; }
         .w-full { width: 100%; }
@@ -54,498 +52,371 @@
         .text-lg { font-size: 1.125rem; }
         .opacity-0 { opacity: 0; pointer-events: none; }
         .translate-y-full { transform: translateY(100%); }
-        
-        /* --- COMPONENTS --- */
+        .text-muted { color: var(--text-muted); }
+
         /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
             padding: 0.75rem 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0; z-index: 20;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        
         .icon-box {
             width: 2.5rem; height: 2.5rem;
-            background-color: var(--primary-light);
-            color: var(--primary);
-            border-radius: 0.75rem;
-            display: flex; align-items: center; justify-content: center;
+            background-color: var(--primary-light); color: var(--primary);
+            border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;
         }
-
         .icon-btn {
-            padding: 0.5rem;
-            color: var(--text-muted);
-            background: transparent;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
+            padding: 0.5rem; color: var(--text-muted); background: transparent;
+            border: none; border-radius: 50%; cursor: pointer;
         }
         .icon-btn:active { background-color: var(--border); }
 
         /* Main Content */
-        .main-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            padding-bottom: 8rem; /* Space for bottom bar */
-        }
-        
+        .main-scroll { flex: 1; overflow-y: auto; padding: 1rem; padding-bottom: 8rem; }
         .container { max-width: 600px; margin: 0 auto; }
 
         /* Inputs */
         .input-group {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 0.25rem;
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 1rem; padding: 0.25rem; display: flex; align-items: center; margin-bottom: 1rem;
         }
         .input-icon { padding-left: 1rem; color: var(--text-muted); }
         .clean-input {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            background: transparent;
-            font-size: 1rem;
-            outline: none;
-            color: var(--text);
+            width: 100%; padding: 1rem; border: none; background: transparent;
+            font-size: 1rem; outline: none; color: var(--text);
         }
 
-        /* Banners */
+        /* Banner */
         .banner {
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem;
+            display: flex; align-items: center; justify-content: space-between;
             font-size: 0.875rem;
         }
-        .banner-amber { background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; }
-        .banner-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; justify-content: space-between; }
+        .banner-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .dot-red { background: #ef4444; }
+        .dot-green { background: #22c55e; }
 
-        /* Product Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-        
+        /* Grid */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1rem;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.1s;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 1rem; padding: 1rem; position: relative;
+            cursor: pointer; transition: transform 0.1s;
         }
-        .card:active { transform: scale(0.98); }
-        
+        .card:active { transform: scale(0.96); background: #f8fafc; }
         .avatar {
-            width: 2.5rem; height: 2.5rem;
-            border-radius: 50%;
+            width: 2.5rem; height: 2.5rem; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+            font-weight: bold; font-size: 0.875rem; margin-bottom: 0.5rem;
         }
-        
         .badge {
-            background: var(--primary);
-            color: white;
-            font-size: 0.75rem;
-            padding: 0.15rem 0.5rem;
-            border-radius: 99px;
-            font-weight: bold;
+            background: var(--primary); color: white; font-size: 0.75rem;
+            padding: 0.15rem 0.5rem; border-radius: 99px; font-weight: bold;
         }
-
         .btn-delete-card {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 24px;
-            height: 24px;
-            background: #fee2e2;
-            color: #ef4444;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            border: 1px solid #fecaca;
-            z-index: 10;
+            position: absolute; top: 5px; right: 5px; width: 24px; height: 24px;
+            background: #fee2e2; color: #ef4444; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; border: 1px solid #fecaca; z-index: 10;
         }
 
         /* Bottom Bar */
         .bottom-bar {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            z-index: 30;
-            transition: transform 0.3s;
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
         .summary-card {
-            background: var(--primary-dark);
-            color: white;
-            padding: 1rem;
-            border-radius: 1rem 1rem 0 0;
-            cursor: pointer;
-            max-width: 600px;
-            margin: 0 auto;
+            background: var(--primary-dark); color: white; padding: 1rem;
+            border-radius: 1.5rem 1.5rem 0 0; cursor: pointer;
+            max-width: 600px; margin: 0 auto; box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
         }
-        
         .circle-badge {
-            background: rgba(0,0,0,0.3);
-            width: 2.5rem; height: 2.5rem;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold;
+            background: rgba(255,255,255,0.2); width: 2.5rem; height: 2.5rem;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
         }
 
         /* Modal */
         .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 40;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40;
             display: flex; align-items: flex-end; justify-content: center;
-            backdrop-filter: blur(2px);
-            transition: opacity 0.3s;
+            backdrop-filter: blur(2px); transition: opacity 0.3s;
         }
         .modal-content {
-            background: var(--surface);
-            width: 100%; max-width: 600px;
-            max-height: 85vh;
-            border-radius: 1.5rem 1.5rem 0 0;
-            display: flex; flex-direction: column;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
+            background: var(--surface); width: 100%; max-width: 600px;
+            max-height: 90vh; border-radius: 1.5rem 1.5rem 0 0;
+            display: flex; flex-direction: column; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
         .modal-header { padding: 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .modal-body { flex: 1; overflow-y: auto; padding: 1rem; }
         .modal-footer { padding: 1rem; border-top: 1px solid var(--border); background: var(--bg); }
 
-        /* Checkout Specifics */
-        .pay-input-wrapper { position: relative; }
+        /* Checkout */
+        .pay-input-wrapper { position: relative; margin: 0.5rem 0 1rem; }
         .pay-currency { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: bold; }
         .pay-input {
-            width: 100%; padding: 1rem 1rem 1rem 3rem;
-            font-size: 1.25rem; font-weight: bold;
-            border: 1px solid var(--border); border-radius: 0.75rem;
-            background: var(--bg); outline: none;
+            width: 100%; padding: 1rem 1rem 1rem 3rem; font-size: 1.25rem; font-weight: bold;
+            border: 2px solid var(--border); border-radius: 0.75rem; background: white; outline: none;
         }
-        .pay-input:focus { border-color: var(--primary); background: white; }
-
-        .quick-money-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.5rem; }
-        .btn-quick { padding: 0.5rem; font-size: 0.75rem; border: 1px solid var(--border); background: white; border-radius: 0.5rem; font-weight: bold; cursor: pointer; }
+        .pay-input:focus { border-color: var(--primary); }
+        .quick-money-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+        .btn-quick { padding: 0.6rem 0.2rem; font-size: 0.75rem; border: 1px solid var(--border); background: white; border-radius: 0.5rem; font-weight: bold; color: var(--text-muted); }
         .btn-quick:active { background: var(--border); }
         .btn-exact { background: var(--primary-light); color: var(--primary-dark); border-color: var(--primary-light); }
 
         .btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 0.75rem;
-            font-size: 1.125rem;
-            font-weight: bold;
-            display: flex; justify-content: center; align-items: center; gap: 0.5rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
+            width: 100%; padding: 1rem; background: var(--primary); color: white;
+            border: none; border-radius: 0.75rem; font-size: 1.125rem; font-weight: bold;
+            cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(4, 120, 87, 0.3);
         }
         .btn-primary:active { transform: scale(0.98); }
-        .btn-primary:disabled { opacity: 0.5; pointer-events: none; background: #94a3b8; }
+        .btn-primary:disabled { background: #cbd5e1; color: #64748b; box-shadow: none; }
 
-        .change-display {
-            background: #0f172a; color: white;
-            padding: 1rem; border-radius: 0.75rem;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 1rem;
-        }
+        .radio-label { display: flex; align-items: center; padding: 1rem; border: 1px solid var(--border); border-radius: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; background: white; }
+        .radio-label.selected { border-color: var(--primary); background-color: var(--primary-light); }
+        .radio-label input { margin-right: 1rem; transform: scale(1.2); }
 
-        /* --- PRINT AREA (STRUK) --- */
-        #print-area-wrapper { display: none; }
-        
-        .font-receipt {
-          font-family: monospace; /* Font bawaan sistem */
-          font-size: 11pt;        /* UPDATE: Font lebih besar */
-          line-height: 1.2;
-          color: black;
-          font-weight: bold;
-        }
-        .receipt-row { display: flex; justify-content: space-between; width: 100%; margin-bottom: 2px; }
-        .dashed-line { border-bottom: 1px dashed black; margin: 6px 0; width: 100%; }
-        .receipt-truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; }
-
-        @media print {
-            @page { 
-                margin: 0;       /* UPDATE: Margin nol mutlak */
-                size: 58mm auto; 
-            }
-            body > * { display: none !important; }
-            
-            /* UPDATE: Reset body margin/padding for print */
-            html, body {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100%;
-            }
-
-            #print-area-wrapper { 
-                display: block !important; 
-                position: absolute; left: 0; top: 0; width: 100%; 
-            }
-            #receipt-preview-container {
-                visibility: visible !important;
-                position: fixed !important; left: 0 !important; top: 0 !important;
-                width: 100% !important; margin: 0 !important; padding: 0 !important;
-            }
-            #receipt-area { padding: 0 !important; width: 100% !important; }
-        }
-
-        /* Animations */
+        /* Helpers */
         .animate-up { animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* Settings Modal Specific */
-        .radio-label { display: flex; align-items: center; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; margin-bottom: 0.5rem; cursor: pointer; }
-        .radio-label:active { background-color: var(--bg); }
+        /* Print Hidden Area */
+        #print-area-wrapper { display: none; }
+        
+        @media print {
+            @page { margin: 0; size: 58mm auto; }
+            body * { visibility: hidden; }
+            #print-area-wrapper, #print-area-wrapper * { visibility: visible; }
+            #print-area-wrapper { 
+                position: absolute; left: 0; top: 0; width: 58mm; 
+                font-family: 'Courier New', monospace; font-size: 10pt; color: black; line-height: 1.2;
+                padding-bottom: 5mm; 
+            }
+            .dashed { border-bottom: 1px dashed black; width: 100%; margin: 5px 0; }
+            .row { display: flex; justify-content: space-between; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 1. TOP BAR -->
+    <!-- TOP BAR -->
     <header class="header">
         <div class="flex items-center gap-3">
             <div class="icon-box">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
             </div>
             <div>
-                <h1 class="font-bold" style="line-height: 1.1;">Kasir Ponpes</h1>
+                <h1 class="font-bold text-lg" style="line-height: 1;">Kasir Ponpes</h1>
                 <p class="text-xs text-muted" id="trxIdDisplay">ID: ...</p>
             </div>
         </div>
         <div class="flex gap-2">
-            <button onclick="openSettings()" class="icon-btn" title="Setting">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            </button>
-            <button onclick="openHistory()" class="icon-btn" title="Riwayat">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </button>
-            <button onclick="resetTransaction()" class="icon-btn" title="Reset">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-            </button>
+            <button onclick="openSettings()" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+            <button onclick="resetTrans()" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></button>
         </div>
     </header>
 
-    <!-- 2. MAIN CONTENT -->
+    <!-- MAIN CONTENT -->
     <main class="main-scroll">
         <div class="container">
-            
-            <!-- Notifikasi -->
-            <div id="reprintBanner" class="banner banner-amber hidden animate-up">
-                <b>Mode Cetak Ulang</b>
-                <span>ID Transaksi tetap.</span>
-            </div>
-            
-             <div id="printModeBanner" class="banner banner-blue hidden animate-up">
-                <span>Mode: <b>RawBT Direct</b></span>
-                <button onclick="openSettings()" style="background:none; border:none; color:inherit; text-decoration: underline;">Ubah</button>
+            <!-- Print Status Banner -->
+            <div class="banner banner-blue" id="printerStatusBanner" onclick="openSettings()">
+                <div>
+                    <span id="btIndicator" class="status-dot dot-red"></span>
+                    <span id="printerStatusText">Printer: Belum Terhubung</span>
+                </div>
+                <b>Set</b>
             </div>
 
-            <!-- Input Santri -->
             <div class="input-group">
                 <div class="input-icon">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 </div>
-                <input type="text" id="inputNama" class="clean-input" placeholder="Masukkan Nama Santri..." oninput="updateState('santriName', this.value)">
+                <input type="text" id="inputNama" class="clean-input" placeholder="Nama Santri..." oninput="updateState('name', this.value)">
             </div>
 
-            <!-- Product Grid -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.75rem;">
-                <h2 class="text-xs font-bold" style="color:var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Menu Barang</h2>
-                <button onclick="openAddProductModal()" style="font-size: 0.75rem; font-weight: bold; color: var(--primary); background: var(--primary-light); border: none; padding: 0.3rem 0.6rem; border-radius: 0.5rem;">+ Custom</button>
+            <div class="flex justify-between items-end mb-3">
+                <h2 class="text-xs font-bold text-muted uppercase tracking-wider">Menu Barang</h2>
+                <button onclick="openAddProductModal()" class="text-xs font-bold text-primary bg-emerald-100 px-3 py-1 rounded">+ Custom</button>
             </div>
             
-            <div class="grid" id="productGrid">
-                <!-- Javascript will fill this -->
-            </div>
+            <div class="grid" id="productGrid"></div>
         </div>
     </main>
 
-    <!-- 3. BOTTOM BAR -->
+    <!-- BOTTOM BAR -->
     <div id="bottomBar" class="bottom-bar translate-y-full">
         <div class="container">
             <div class="summary-card" onclick="openCheckout()">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
-                        <div class="circle-badge" id="cartCountBadge">0</div>
+                        <div class="circle-badge" id="cartCount">0</div>
                         <div class="flex-col">
-                            <span class="text-xs" style="opacity: 0.8;">Total Tagihan</span>
-                            <span class="font-bold text-lg" style="display: block;" id="cartTotalPreview">Rp0</span>
+                            <span class="text-xs opacity-80">Total Tagihan</span>
+                            <span class="font-bold text-lg" id="cartTotal">Rp0</span>
                         </div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: bold;">
-                        Bayar & Cetak &rarr;
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: bold;">
+                        Bayar &rarr;
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 4. CHECKOUT MODAL -->
+    <!-- MODALS -->
+    <!-- Checkout -->
     <div id="checkoutModal" class="modal-overlay hidden opacity-0">
         <div class="modal-content translate-y-full" id="checkoutContent">
             <div class="modal-header">
                 <h3 class="font-bold text-lg">Pembayaran</h3>
                 <button onclick="closeCheckout()" class="icon-btn">✕</button>
             </div>
-
             <div class="modal-body">
-                <div id="checkoutCartList" style="margin-bottom: 1rem;"></div>
+                <div id="cartList" class="mb-4"></div>
                 <div style="border-top: 1px dashed var(--border); margin: 1rem 0;"></div>
                 
-                <label class="text-sm font-bold" style="color: var(--text-muted);">Nominal Diterima</label>
-                <div class="pay-input-wrapper" style="margin-top: 0.5rem;">
+                <label class="text-sm font-bold text-muted">Uang Diterima</label>
+                <div class="pay-input-wrapper">
                     <span class="pay-currency">Rp</span>
-                    <input type="tel" id="inputBayar" class="pay-input" placeholder="0 (Uang Pas)" oninput="updateState('paymentInput', this.value)">
+                    <input type="tel" id="inputBayar" class="pay-input" placeholder="0 (Uang Pas)" oninput="updateState('pay', this.value)">
                 </div>
-                
                 <div class="quick-money-grid">
                     <button onclick="setPayment('exact')" class="btn-quick btn-exact">Uang Pas</button>
                     <button onclick="setPayment(10000)" class="btn-quick">10k</button>
                     <button onclick="setPayment(20000)" class="btn-quick">20k</button>
                     <button onclick="setPayment(50000)" class="btn-quick">50k</button>
                 </div>
-
-                <div class="change-display">
-                    <span class="text-sm" style="opacity: 0.7;">Kembalian</span>
-                    <span class="font-bold text-lg" id="checkoutChange">Rp0</span>
+                <div class="flex justify-between items-center mt-4 bg-slate-800 text-white p-4 rounded-xl">
+                    <span class="text-sm opacity-70">Kembalian</span>
+                    <span class="font-bold text-xl" id="changeDisplay">Rp0</span>
                 </div>
             </div>
-
             <div class="modal-footer">
-                 <button id="btnFinalPrint" onclick="handlePrint()" class="btn-primary">
+                <button id="btnPrint" onclick="handlePrint()" class="btn-primary">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v8H6z"></path></svg>
                     CETAK STRUK
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 5. PRODUCT MODAL -->
-    <div id="productModal" class="modal-overlay hidden" style="align-items: center;">
+    <!-- Settings (Printer) -->
+    <div id="settingsModal" class="modal-overlay hidden" style="align-items: center;">
         <div class="modal-content animate-up" style="max-width: 350px; border-radius: 1rem;">
+            <div class="modal-header">
+                <h3 class="font-bold">Pengaturan Printer</h3>
+                <button onclick="closeSettings()" class="icon-btn">✕</button>
+            </div>
             <div class="modal-body">
-                <h3 class="font-bold text-lg mb-4">Tambah Custom</h3>
-                <input type="text" id="newProductName" placeholder="Nama Barang" class="clean-input" style="border: 1px solid var(--border); border-radius: 0.5rem; margin-bottom: 0.5rem;">
-                <input type="number" id="newProductPrice" placeholder="Harga (Rp)" class="clean-input" style="border: 1px solid var(--border); border-radius: 0.5rem;">
+                <p class="text-xs text-muted mb-3">Pilih metode koneksi printer:</p>
+                
+                <label class="radio-label" id="opt-bt" onclick="selectPrintMode('bluetooth')">
+                    <input type="radio" name="pmode" value="bluetooth">
+                    <div>
+                        <div class="font-bold">Bluetooth Direct (Recommended)</div>
+                        <div class="text-xs text-muted">Koneksi langsung, potong otomatis, tanpa dialog.</div>
+                    </div>
+                </label>
+
+                <label class="radio-label" id="opt-browser" onclick="selectPrintMode('browser')">
+                    <input type="radio" name="pmode" value="browser">
+                    <div>
+                        <div class="font-bold">System Print</div>
+                        <div class="text-xs text-muted">Menggunakan Print Service bawaan Android/Browser.</div>
+                    </div>
+                </label>
+
+                <div id="btConnectArea" class="hidden mt-3 p-3 bg-yellow-50 rounded border border-yellow-200">
+                    <p class="text-xs text-yellow-800 mb-2">Pastikan Bluetooth aktif & printer sudah dipairing.</p>
+                    <button onclick="connectBluetooth()" class="w-full bg-blue-600 text-white font-bold py-2 rounded text-sm">
+                        Cari & Sambungkan Printer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product -->
+    <div id="productModal" class="modal-overlay hidden" style="align-items: center;">
+        <div class="modal-content animate-up" style="max-width: 320px; border-radius: 1rem;">
+            <div class="modal-body">
+                <h3 class="font-bold text-lg mb-4">Tambah Menu</h3>
+                <input type="text" id="newProdName" placeholder="Nama Barang" class="clean-input border border-slate-200 rounded mb-2">
+                <input type="number" id="newProdPrice" placeholder="Harga" class="clean-input border border-slate-200 rounded">
             </div>
             <div class="modal-footer flex gap-2">
-                <button onclick="closeProductModal()" class="btn-primary" style="background: var(--bg); color: var(--text); box-shadow: none; border: 1px solid var(--border);">Batal</button>
+                <button onclick="closeProductModal()" class="btn-primary" style="background:#fff; color:#333; border:1px solid #ccc; box-shadow:none;">Batal</button>
                 <button onclick="addNewProduct()" class="btn-primary">Simpan</button>
             </div>
         </div>
     </div>
 
-    <!-- 6. SETTINGS MODAL -->
-    <div id="settingsModal" class="modal-overlay hidden" style="align-items: center;">
-        <div class="modal-content animate-up" style="max-width: 350px; border-radius: 1rem;">
-            <div class="modal-body">
-                <h3 class="font-bold text-lg mb-2">Pengaturan Printer</h3>
-                <p class="text-sm text-muted" style="margin-bottom: 1rem;">Pilih metode cetak:</p>
-                
-                <label class="radio-label" onclick="setPrintMode('browser')">
-                    <input type="radio" name="printMode" value="browser" id="radioBrowser">
-                    <div style="margin-left: 0.75rem;">
-                        <span class="block font-bold">Bawaan Browser</span>
-                        <span class="block text-xs text-muted">Dialog print Chrome/System</span>
-                    </div>
-                </label>
-
-                <label class="radio-label" onclick="setPrintMode('rawbt')">
-                    <input type="radio" name="printMode" value="rawbt" id="radioRawbt">
-                    <div style="margin-left: 0.75rem;">
-                        <span class="block font-bold">RawBT (Direct)</span>
-                        <span class="block text-xs text-muted">Langsung ke Printer (Cepat)</span>
-                    </div>
-                </label>
-            </div>
-            <div class="modal-footer">
-                <button onclick="closeSettings()" class="btn-primary">Simpan</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 7. HISTORY MODAL -->
-    <div id="historyModal" class="modal-overlay hidden">
-        <div class="modal-content animate-up">
-            <div class="modal-header">
-                <h3 class="font-bold text-lg">Riwayat</h3>
-                <button onclick="closeHistory()" class="icon-btn">✕</button>
-            </div>
-            <div class="modal-body">
-                <div id="historyListBody" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
-                <div id="emptyHistoryMsg" class="hidden text-center text-muted" style="padding: 2rem;">Belum ada riwayat</div>
-            </div>
-            <div class="modal-footer text-center">
-                <button onclick="clearAllHistory()" style="background: none; border: none; color: #ef4444; font-weight: bold; font-size: 0.875rem;">Hapus Semua Riwayat</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- STRUK PREVIEW (HIDDEN) -->
+    <!-- PRINT PREVIEW (For Browser Mode) -->
     <div id="print-area-wrapper">
-        <div id="receipt-preview-container">
-            <div id="receipt-area" class="font-receipt">
-                <div class="text-center" style="margin-bottom: 5px; padding-top: 10px;">
-                    <div style="font-size: 1.1em;">Kantor Penitipan</div>
-                    <div>Ponpes Wali Barokah</div>
-                    <div>082143358005</div>
-                </div>
-                <div class="dashed-line"></div>
-                
-                <div class="receipt-row">
-                    <span>Atas Nama</span>
-                    <span id="receiptNama" class="receipt-truncate">-</span>
-                </div>
-                <div class="receipt-row"><span>No</span><span id="receiptNo"></span></div>
-                <div class="receipt-row"><span>Tanggal</span><span id="receiptDate"></span></div>
-                <div class="receipt-row"><span>Kasir</span><span>Kantor Penitipan</span></div>
-                <div class="receipt-row"><span>Pembayaran</span><span>Tunai</span></div>
-                
-                <div class="dashed-line"></div>
-                <div id="receiptItems" class="w-full"></div>
-                <div class="dashed-line"></div>
-
-                <div class="receipt-row"><span>Total Pesanan</span><span id="receiptTotalPesanan">Rp0</span></div>
-                <div class="receipt-row" style="margin-bottom: 5px;"><span>Total</span><span id="receiptTotal">Rp0</span></div>
-                <div class="receipt-row"><span>Bayar</span><span id="receiptBayar">Rp0</span></div>
-                <div class="receipt-row"><span>Kembali</span><span id="receiptKembali">Rp0</span></div>
-                
-                <div class="dashed-line"></div>
-                <div class="text-center" style="margin-top: 5px; padding-bottom: 20px; font-size: 0.9em;">
-                    <div>Alhamdulillah</div>
-                    <div>Jazakumullohu Khoiro</div>
-                </div>
-            </div>
+        <div class="text-center">
+            <b style="font-size: 1.2em;">KANTOR PENITIPAN</b><br>
+            Ponpes Wali Barokah<br>
+            082143358005
+        </div>
+        <div class="dashed"></div>
+        <div class="row"><span>Tanggal:</span><span id="pDate"></span></div>
+        <div class="row"><span>ID:</span><span id="pId"></span></div>
+        <div class="row"><span>Nama:</span><span id="pName"></span></div>
+        <div class="dashed"></div>
+        <div id="pItems"></div>
+        <div class="dashed"></div>
+        <div class="row"><b>Total:</b><b id="pTotal"></b></div>
+        <div class="row"><span>Bayar:</span><span id="pPay"></span></div>
+        <div class="row"><span>Kembali:</span><span id="pChange"></span></div>
+        <div class="dashed"></div>
+        <div class="text-center" style="margin-top:10px;">
+            Alhamdulillah<br>Jazakumullohu Khoiro
         </div>
     </div>
 
-    <!-- LOGIC -->
     <script>
-        // State
-        let state = { name: '', id: '', date: '', cart: [], pay: '', isHistory: false, printMode: 'browser' };
+        // --- ESC/POS ENCODER CLASS (MINI) ---
+        class EscPos {
+            constructor() { this.buffer = []; }
+            init() { this.buffer.push(0x1B, 0x40); return this; }
+            align(align) { // 0:Left, 1:Center, 2:Right
+                this.buffer.push(0x1B, 0x61, align === 'center' ? 1 : (align === 'right' ? 2 : 0)); return this;
+            }
+            text(str) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(str);
+                data.forEach(b => this.buffer.push(b));
+                return this;
+            }
+            bold(isActive) { this.buffer.push(0x1B, 0x45, isActive ? 1 : 0); return this; }
+            feed(n = 1) { for(let i=0; i<n; i++) this.buffer.push(0x0A); return this; }
+            cut() { this.buffer.push(0x1D, 0x56, 0x42, 0x00); return this; } // Feed and Cut
+            line() { this.text("-".repeat(32)); this.feed(); return this; }
+            row(left, right) {
+                // Simple 32 col splitter (58mm)
+                let l = left.toString(); let r = right.toString();
+                let space = 32 - l.length - r.length;
+                if (space < 0) space = 0; // Truncate logic needed ideally, but keeping simple
+                this.text(l + " ".repeat(space) + r);
+                this.feed();
+                return this;
+            }
+            getUint8Array() { return new Uint8Array(this.buffer); }
+        }
+
+        // --- APP LOGIC ---
+        let state = { 
+            name: '', id: '', date: '', cart: [], pay: '', 
+            printMode: localStorage.getItem('pmode') || 'browser',
+            btDevice: null,
+            btChar: null
+        };
         
-        // Products (Inline styles for avatar colors)
         let products = [
             { id: 1, name: 'Kalung', price: 10000, bg: '#fce7f3', color: '#be185d' }, 
             { id: 2, name: 'Gelang', price: 5000, bg: '#f3e8ff', color: '#7e22ce' },
@@ -555,299 +426,319 @@
             { id: 6, name: 'Peniti', price: 1000, bg: '#f1f5f9', color: '#334155' }
         ];
 
-        // Helpers
-        const formatRupiah = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n).replace(/\s/g, '');
+        const formatRp = (n) => 'Rp' + new Intl.NumberFormat('id-ID').format(n);
         const genId = () => {
-             const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-             let prefix = "";
-             for (let i = 0; i < 3; i++) prefix += letters.charAt(Math.floor(Math.random() * letters.length));
-             return `${prefix}${Math.floor(10000000000 + Math.random() * 90000000000)}`;
+             const ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+             let p = ""; for (let i = 0; i < 3; i++) p += ch.charAt(Math.floor(Math.random() * ch.length));
+             return `${p}${Math.floor(10000000000 + Math.random() * 90000000000)}`;
         };
-        const getDate = () => { const now = new Date(); const pad = (n) => String(n).padStart(2, '0'); return `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`; };
-        
-        // --- Core ---
-        function updateState(key, val) {
-            if (key === 'santriName') state.name = val;
-            if (key === 'paymentInput') { state.pay = val; calculateChange(); }
-            renderReceiptData();
+
+        // --- CORE FUNCTIONS ---
+        function init() {
+            resetTrans();
+            renderGrid();
+            selectPrintMode(state.printMode);
+            // Cek jika sudah pernah connect bluetooth sebelumnya (limited capability in web)
+            updatePrinterStatus();
         }
 
-        function addToCart(productId) {
-            const p = products.find(i => i.id == productId);
-            if (p) {
-                const exist = state.cart.find(c => c.id == p.id);
-                if (exist) exist.qty++; else state.cart.push({ ...p, qty: 1 });
-                renderUI();
-                if (navigator.vibrate) navigator.vibrate(40);
-            }
+        function resetTrans() {
+            state.name = ''; state.id = genId(); state.date = new Date().toLocaleString('id-ID');
+            state.cart = []; state.pay = '';
+            document.getElementById('inputNama').value = '';
+            document.getElementById('inputBayar').value = '';
+            document.getElementById('trxIdDisplay').innerText = `ID: ${state.id}`;
+            renderUI();
         }
 
-        function removeFromCart(productId) {
-            const idx = state.cart.findIndex(c => c.id == productId);
-            if (idx > -1) {
-                if (state.cart[idx].qty <= 1) state.cart.splice(idx, 1);
-                else state.cart[idx].qty--;
-                renderUI();
+        function updateState(k, v) {
+            if (k === 'name') state.name = v;
+            if (k === 'pay') state.pay = v;
+            renderUI();
+        }
+
+        function addToCart(pid) {
+            let p = products.find(x => x.id == pid);
+            let exist = state.cart.find(x => x.id == pid);
+            if(exist) exist.qty++; else state.cart.push({...p, qty:1});
+            if(navigator.vibrate) navigator.vibrate(30);
+            renderUI();
+        }
+
+        function remFromCart(pid) {
+            let idx = state.cart.findIndex(x => x.id == pid);
+            if(idx > -1) {
+                if(state.cart[idx].qty > 1) state.cart[idx].qty--;
+                else state.cart.splice(idx, 1);
             }
+            renderUI();
         }
         
-        // FUNGSI BARU: HAPUS MENU
         function deleteProduct(e, id) {
-            e.stopPropagation(); // Biar gak nambah ke keranjang pas diklik
-            if(confirm('Hapus menu ini?')) {
-                // Hapus dari list produk
-                products = products.filter(p => p.id !== id);
-                // Hapus juga dari keranjang jika ada
-                state.cart = state.cart.filter(c => c.id !== id);
+            e.stopPropagation();
+            if(confirm('Hapus menu ini permanen?')) {
+                products = products.filter(p=>p.id !== id);
+                state.cart = state.cart.filter(c=>c.id !== id);
                 renderUI();
             }
         }
 
-        function getCartTotal() { return state.cart.reduce((acc, item) => acc + (item.price * item.qty), 0); }
+        function getTotals() {
+            let total = state.cart.reduce((a,b) => a + (b.price*b.qty), 0);
+            let pay = state.pay === '' ? total : parseInt(state.pay);
+            return { total, pay, change: pay - total };
+        }
 
-        // --- Render UI ---
+        // --- RENDERING ---
         function renderUI() {
-            renderProductGrid();
-            renderBottomBar();
-            renderCheckoutList();
-            renderReceiptData();
+            renderGrid();
             
-            const banner = document.getElementById('printModeBanner');
-            if(state.printMode === 'rawbt') banner.classList.remove('hidden'); else banner.classList.add('hidden');
-        }
-
-        function renderProductGrid() {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            products.forEach(p => {
-                const inCart = state.cart.find(c => c.id == p.id);
-                const qty = inCart ? inCart.qty : 0;
-                const initials = p.name.substring(0,2).toUpperCase();
-                const bgColor = p.bg || '#f1f5f9';
-                const textColor = p.color || '#334155';
-
-                const card = document.createElement('div');
-                card.className = "card";
-                card.onclick = () => addToCart(p.id);
-                card.innerHTML = `
-                    <button class="btn-delete-card" onclick="deleteProduct(event, ${p.id})">×</button>
-                    <div class="flex justify-between items-start" style="margin-bottom:0.5rem">
-                        <div class="avatar" style="background:${bgColor}; color:${textColor}">${initials}</div>
-                        <div class="badge ${qty > 0 ? '' : 'hidden'}">${qty}</div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-sm" style="line-height:1.2; margin-bottom:0.25rem;">${p.name}</h3>
-                        <p class="text-sm font-bold" style="color:var(--primary)">${formatRupiah(p.price)}</p>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function renderBottomBar() {
+            // Bottom Bar
+            let t = getTotals();
+            let qty = state.cart.reduce((a,b)=>a+b.qty,0);
+            document.getElementById('cartCount').innerText = qty;
+            document.getElementById('cartTotal').innerText = formatRp(t.total);
+            
             const bar = document.getElementById('bottomBar');
-            const total = getCartTotal();
-            const count = state.cart.reduce((a, b) => a + b.qty, 0);
-
-            if (count > 0) {
+            if(qty > 0) {
                 bar.classList.remove('translate-y-full');
-                document.getElementById('cartCountBadge').innerText = count;
-                document.getElementById('cartTotalPreview').innerText = formatRupiah(total);
+                // Auto update checkout modal content if open
+                renderCheckoutList(); 
             } else {
                 bar.classList.add('translate-y-full');
                 closeCheckout();
             }
         }
 
-        function renderCheckoutList() {
-            const list = document.getElementById('checkoutCartList');
-            list.innerHTML = '';
-            if(state.cart.length === 0) { list.innerHTML = '<div class="text-center text-muted">Kosong</div>'; return; }
-
-            state.cart.forEach(item => {
-                const row = document.createElement('div');
-                row.className = 'flex justify-between items-center';
-                row.style.marginBottom = '0.75rem';
-                row.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div style="background:var(--bg); padding:0.25rem 0.5rem; border-radius:0.5rem; font-weight:bold; font-size:0.75rem;">${item.qty}x</div>
-                        <div>
-                            <div class="font-bold text-sm">${item.name}</div>
-                            <div class="text-xs text-muted">@${formatRupiah(item.price)}</div>
-                        </div>
+        function renderGrid() {
+            const el = document.getElementById('productGrid');
+            el.innerHTML = '';
+            products.forEach(p => {
+                let inCart = state.cart.find(c => c.id == p.id);
+                let q = inCart ? inCart.qty : 0;
+                let ini = p.name.substring(0,2).toUpperCase();
+                
+                let d = document.createElement('div');
+                d.className = 'card';
+                d.onclick = () => addToCart(p.id);
+                d.innerHTML = `
+                    <button class="btn-delete-card" onclick="deleteProduct(event, ${p.id})">×</button>
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="avatar" style="background:${p.bg||'#eee'}; color:${p.color||'#333'}">${ini}</div>
+                        ${q>0 ? `<div class="badge">${q}</div>` : ''}
                     </div>
-                    <div class="flex items-center gap-3">
-                        <span class="font-bold text-sm">${formatRupiah(item.price * item.qty)}</span>
-                        <div style="display:flex; border:1px solid var(--border); border-radius:0.5rem; overflow:hidden;">
-                            <button onclick="removeFromCart(${item.id})" style="padding:0.25rem 0.5rem; border:none; background:white; cursor:pointer;">-</button>
-                            <button onclick="addToCart(${item.id})" style="padding:0.25rem 0.5rem; border:none; background:white; cursor:pointer;">+</button>
-                        </div>
+                    <div>
+                        <div class="font-bold text-sm leading-tight mb-1">${p.name}</div>
+                        <div class="text-sm font-bold text-primary">${formatRp(p.price)}</div>
                     </div>
                 `;
-                list.appendChild(row);
+                el.appendChild(d);
+            });
+        }
+
+        function renderCheckoutList() {
+            const el = document.getElementById('cartList');
+            el.innerHTML = '';
+            state.cart.forEach(i => {
+                el.innerHTML += `
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="bg-slate-100 px-2 rounded text-xs font-bold">${i.qty}x</div>
+                        <div>
+                            <div class="text-sm font-bold">${i.name}</div>
+                            <div class="text-xs text-muted">@${formatRp(i.price)}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm">${formatRp(i.price*i.qty)}</span>
+                        <div class="flex border rounded overflow-hidden">
+                            <button onclick="remFromCart(${i.id})" class="px-2 py-1 bg-white hover:bg-slate-100">-</button>
+                            <button onclick="addToCart(${i.id})" class="px-2 py-1 bg-white hover:bg-slate-100">+</button>
+                        </div>
+                    </div>
+                </div>`;
             });
             
-            const totalRow = document.createElement('div');
-            totalRow.className = 'flex justify-between font-bold text-lg';
-            totalRow.style.color = 'var(--primary)';
-            totalRow.innerHTML = `<span>Total</span><span>${formatRupiah(getCartTotal())}</span>`;
-            list.appendChild(totalRow);
-            calculateChange();
-        }
-
-        function setPayment(amt) {
-            const total = getCartTotal();
-            const val = amt === 'exact' ? total : amt;
-            document.getElementById('inputBayar').value = val;
-            state.pay = val;
-            calculateChange();
-        }
-
-        function calculateChange() {
-            const total = getCartTotal();
-            const rawPay = state.pay; // Bisa kosong
-            const pay = rawPay === '' ? total : parseInt(rawPay); // Default ke total kalau kosong
-            const change = pay - total;
-            const el = document.getElementById('checkoutChange');
-            const btn = document.getElementById('btnFinalPrint');
+            let t = getTotals();
+            let btn = document.getElementById('btnPrint');
+            let disp = document.getElementById('changeDisplay');
             
-            // Logika baru: Jika kosong, dianggap Uang Pas, tombol NYALA
-            if (rawPay === '') {
-                el.innerText = "Uang Pas";
-                el.style.color = "var(--text-muted)";
+            // Total Row
+            el.innerHTML += `<div class="flex justify-between font-bold text-lg text-primary mt-2 pt-2 border-t"><span>Total</span><span>${formatRp(t.total)}</span></div>`;
+            
+            if(state.pay === '') {
+                disp.innerText = "Uang Pas"; disp.style.color = "white";
                 btn.disabled = false;
-            } else if (change < 0) {
-                el.innerText = "Kurang " + formatRupiah(Math.abs(change));
-                el.style.color = "#fca5a5";
+            } else if (t.change < 0) {
+                disp.innerText = "Kurang " + formatRp(Math.abs(t.change)); disp.style.color = "#fca5a5";
                 btn.disabled = true;
             } else {
-                el.innerText = formatRupiah(change);
-                el.style.color = "white";
+                disp.innerText = formatRp(t.change); disp.style.color = "#86efac";
                 btn.disabled = false;
             }
         }
 
-        // --- Receipt ---
-        function renderReceiptData() {
-            document.getElementById('receiptNama').textContent = state.name || '-';
-            document.getElementById('receiptNo').textContent = state.id;
-            document.getElementById('receiptDate').textContent = state.date;
+        // --- BLUETOOTH & PRINTING LOGIC ---
+        function selectPrintMode(m) {
+            state.printMode = m;
+            localStorage.setItem('pmode', m);
+            document.querySelectorAll('.radio-label').forEach(r => r.classList.remove('selected'));
+            document.getElementById(m === 'browser' ? 'opt-browser' : 'opt-bt').classList.add('selected');
             
-            const total = getCartTotal();
-            // Default ke total (uang pas) saat print jika kosong
-            const pay = (!state.pay) ? total : parseInt(state.pay);
-            const itemCont = document.getElementById('receiptItems');
+            const area = document.getElementById('btConnectArea');
+            if(m === 'bluetooth' && !state.btDevice) area.classList.remove('hidden');
+            else area.classList.add('hidden');
             
-            if(state.cart.length===0) itemCont.innerHTML='<div class="text-center" style="font-size:0.8em; padding:5px 0;">.. kosong ..</div>';
-            else {
-                itemCont.innerHTML='';
-                state.cart.forEach(i => {
-                    itemCont.innerHTML += `<div style="margin-bottom:2px;"><div class="receipt-truncate">${i.name}</div><div class="receipt-row"><span>${formatRupiah(i.price)} x ${i.qty}</span><span>${formatRupiah(i.price * i.qty)}</span></div></div>`;
-                });
-            }
-            document.getElementById('receiptTotalPesanan').textContent = formatRupiah(total);
-            document.getElementById('receiptTotal').textContent = formatRupiah(total);
-            document.getElementById('receiptBayar').textContent = formatRupiah(pay);
-            document.getElementById('receiptKembali').textContent = formatRupiah(pay - total);
+            updatePrinterStatus();
         }
 
-        // --- Printing ---
-        function handlePrint() {
-            if (state.cart.length === 0) return alert("Keranjang kosong!");
-            if (!state.isHistory) {
-                const hist = JSON.parse(localStorage.getItem('pos_lite_history') || '[]');
-                if (!hist.length || hist[0].id !== state.id) {
-                    hist.unshift({ ...state, timestamp: Date.now() });
-                    localStorage.setItem('pos_lite_history', JSON.stringify(hist));
+        async function connectBluetooth() {
+            try {
+                // Request device that supports generic serial (standard for printers)
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }], // Standard UUID for POS Printers
+                    optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb']
+                });
+                
+                const server = await device.gatt.connect();
+                const service = await server.getPrimaryService('000018f0-0000-1000-8000-00805f9b34fb');
+                const characteristic = await service.getCharacteristic('00002af1-0000-1000-8000-00805f9b34fb'); // Write char
+
+                state.btDevice = device;
+                state.btChar = characteristic;
+                
+                device.addEventListener('gattserverdisconnected', () => {
+                    state.btDevice = null; state.btChar = null;
+                    updatePrinterStatus();
+                    alert('Printer Terputus');
+                });
+
+                selectPrintMode('bluetooth');
+                alert('Printer Terhubung!');
+            } catch (e) {
+                console.error(e);
+                alert('Gagal connect: ' + e.message + '. \nPastikan Bluetooth nyala & pilih perangkat yg benar.');
+            }
+        }
+
+        function updatePrinterStatus() {
+            const dot = document.getElementById('btIndicator');
+            const txt = document.getElementById('printerStatusText');
+            
+            if (state.printMode === 'browser') {
+                dot.className = 'status-dot dot-green';
+                txt.innerText = 'Mode: System Print';
+            } else {
+                if (state.btDevice && state.btDevice.gatt.connected) {
+                    dot.className = 'status-dot dot-green';
+                    txt.innerText = 'Bluetooth: ' + state.btDevice.name;
+                } else {
+                    dot.className = 'status-dot dot-red';
+                    txt.innerText = 'Bluetooth: Belum Terhubung';
                 }
             }
-            renderReceiptData();
-            if (state.printMode === 'rawbt') printViaRawBT(); else setTimeout(() => window.print(), 300);
         }
 
-        function b64EncodeUnicode(str) {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) { return String.fromCharCode('0x' + p1); }));
+        async function handlePrint() {
+            let t = getTotals();
+            
+            if (state.printMode === 'browser') {
+                // RENDER HTML PREVIEW
+                document.getElementById('pDate').innerText = state.date;
+                document.getElementById('pId').innerText = state.id;
+                document.getElementById('pName').innerText = state.name || '-';
+                document.getElementById('pTotal').innerText = formatRp(t.total);
+                document.getElementById('pPay').innerText = formatRp(t.pay);
+                document.getElementById('pChange').innerText = formatRp(t.change);
+                
+                let itemHtml = '';
+                state.cart.forEach(x => {
+                    itemHtml += `<div class="row"><span>${x.name}</span><span>${formatRp(x.price*x.qty)}</span></div>`;
+                    itemHtml += `<div class="text-xs text-muted" style="margin-bottom:2px">${x.qty} x ${formatRp(x.price)}</div>`;
+                });
+                document.getElementById('pItems').innerHTML = itemHtml;
+                
+                window.print();
+            } 
+            else if (state.printMode === 'bluetooth') {
+                if (!state.btChar) {
+                    alert("Printer belum terhubung! Masuk ke setting (ikon gear) dulu.");
+                    openSettings();
+                    return;
+                }
+
+                try {
+                    // GENERATE BYTES ESC/POS
+                    const esc = new EscPos();
+                    esc.init().align('center').bold(true).text("KANTOR PENITIPAN").feed()
+                       .text("Ponpes Wali Barokah").feed().bold(false)
+                       .text("082143358005").feed().line()
+                       .align('left')
+                       .row("ID", state.id)
+                       .row("Tgl", state.date.split(' ')[0]) // Just date
+                       .row("Nama", state.name || '-')
+                       .line();
+                       
+                    state.cart.forEach(c => {
+                        esc.text(c.name).feed()
+                           .row(`${c.qty} x ${c.price}`, c.qty*c.price);
+                    });
+                    
+                    esc.line().align('right')
+                       .bold(true).row("TOTAL", t.total).bold(false)
+                       .row("Bayar", t.pay)
+                       .row("Kembali", t.change)
+                       .line().align('center')
+                       .text("Alhamdulillah").feed()
+                       .text("Jazakumullohu Khoiro").feed(3) // Feed paper
+                       .cut(); // Cut paper
+                       
+                    await state.btChar.writeValue(esc.getUint8Array());
+                } catch (e) {
+                    alert("Gagal print bluetooth: " + e.message);
+                }
+            }
+            
+            // Simpan riwayat jika perlu (opsional)
+            closeCheckout();
+            resetTrans();
         }
 
-        function printViaRawBT() {
-            const receiptContent = document.getElementById('receipt-area').innerHTML;
-            // UPDATE: CSS disesuaikan untuk RawBT (margin 0, font 11pt)
-            const css = `body { margin:0; padding:0; font-family:monospace; font-size:11pt; font-weight:bold; width:58mm; } .text-center { text-align:center; } .receipt-row { display:flex; justify-content:space-between; margin-bottom:2px; } .dashed-line { border-bottom:1px dashed black; margin:6px 0; } .receipt-truncate { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:60%; }`;
-            const fullHtml = `<html><head><style>${css}</style></head><body>${receiptContent}</body></html>`;
-            window.location.href = "rawbt:data:text/html;base64," + b64EncodeUnicode(fullHtml);
+        // --- MODAL CONTROLS ---
+        function setPayment(v) { 
+            let t = getTotals().total;
+            document.getElementById('inputBayar').value = v === 'exact' ? t : v; 
+            state.pay = v === 'exact' ? t : v; 
+            renderCheckoutList(); 
         }
-
-        // --- Modal Control ---
-        function openCheckout() {
-            const m = document.getElementById('checkoutModal'); const c = document.getElementById('checkoutContent');
-            m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); c.classList.remove('translate-y-full'); }, 10);
+        function openCheckout() { 
+            document.getElementById('checkoutModal').classList.remove('hidden'); 
+            setTimeout(()=> {
+                document.getElementById('checkoutModal').classList.remove('opacity-0');
+                document.getElementById('checkoutContent').classList.remove('translate-y-full');
+            }, 10);
             renderCheckoutList();
         }
         function closeCheckout() {
-            const m = document.getElementById('checkoutModal'); const c = document.getElementById('checkoutContent');
-            c.classList.add('translate-y-full'); m.classList.add('opacity-0'); setTimeout(() => m.classList.add('hidden'), 300);
+             document.getElementById('checkoutContent').classList.add('translate-y-full');
+             document.getElementById('checkoutModal').classList.add('opacity-0');
+             setTimeout(()=> document.getElementById('checkoutModal').classList.add('hidden'), 300);
         }
-
+        function openSettings() { document.getElementById('settingsModal').classList.remove('hidden'); document.getElementById('settingsModal').classList.add('flex'); selectPrintMode(state.printMode); }
+        function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); document.getElementById('settingsModal').classList.remove('flex'); }
         function openAddProductModal() { document.getElementById('productModal').classList.remove('hidden'); document.getElementById('productModal').classList.add('flex'); }
         function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); document.getElementById('productModal').classList.remove('flex'); }
-        
         function addNewProduct() {
-            const n = document.getElementById('newProductName').value; const p = document.getElementById('newProductPrice').value;
+            let n = document.getElementById('newProdName').value;
+            let p = document.getElementById('newProdPrice').value;
             if(n && p) {
-                const id = Date.now();
-                products.push({ id, name: n, price: parseInt(p), bg:'#e2e8f0', color:'#1e293b' });
-                document.getElementById('newProductName').value=''; document.getElementById('newProductPrice').value='';
-                closeProductModal(); renderProductGrid(); addToCart(id);
+                products.push({id: Date.now(), name: n, price: parseInt(p)});
+                closeProductModal(); renderUI();
             }
         }
 
-        function openSettings() {
-            const m = document.getElementById('settingsModal'); m.classList.remove('hidden'); m.classList.add('flex');
-            document.getElementById(state.printMode === 'browser' ? 'radioBrowser' : 'radioRawbt').checked = true;
-        }
-        function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); document.getElementById('settingsModal').classList.remove('flex'); }
-        function setPrintMode(m) { state.printMode = m; localStorage.setItem('pos_print_mode', m); renderUI(); }
-
-        function openHistory() {
-            const m = document.getElementById('historyModal'); const l = document.getElementById('historyListBody');
-            m.classList.remove('hidden'); m.classList.add('flex'); l.innerHTML = '';
-            const hist = JSON.parse(localStorage.getItem('pos_lite_history') || '[]');
-            if (hist.length === 0) document.getElementById('emptyHistoryMsg').classList.remove('hidden');
-            else {
-                document.getElementById('emptyHistoryMsg').classList.add('hidden');
-                hist.forEach(h => {
-                    const tot = h.cart.reduce((a,b)=>a+(b.price*b.qty),0);
-                    const d = document.createElement('div');
-                    d.style.cssText = "background:var(--bg); padding:1rem; border-radius:1rem; display:flex; justify-content:space-between; align-items:center; cursor:pointer;";
-                    d.onclick = () => loadHistory(h.id);
-                    d.innerHTML = `<div><div style="font-weight:bold; font-size:0.875rem;">${h.date.split(' ')[0]} <span style="background:var(--border); padding:2px 6px; border-radius:4px; font-size:0.75rem;">${h.id}</span></div><div style="font-weight:bold;">${h.name||'Tanpa Nama'}</div></div><div class="text-right"><div style="color:var(--primary); font-weight:bold;">${formatRupiah(tot)}</div></div>`;
-                    l.appendChild(d);
-                });
-            }
-        }
-        function closeHistory() { document.getElementById('historyModal').classList.add('hidden'); document.getElementById('historyModal').classList.remove('flex'); }
-        function clearAllHistory() { if(confirm("Hapus?")) { localStorage.removeItem('pos_lite_history'); openHistory(); } }
-        
-        function loadHistory(id) {
-            const h = JSON.parse(localStorage.getItem('pos_lite_history') || '[]').find(i => i.id === id);
-            if(h) {
-                state = { ...h, isHistory: true, printMode: state.printMode };
-                document.getElementById('inputNama').value = state.name;
-                document.getElementById('trxIdDisplay').innerText = `ID: ${state.id}`;
-                document.getElementById('reprintBanner').classList.remove('hidden');
-                closeHistory(); renderUI(); openCheckout();
-            }
-        }
-
-        function resetTransaction() {
-            state = { name:'', id:genId(), date:getDate(), cart:[], pay:'', isHistory:false, printMode: localStorage.getItem('pos_print_mode') || 'browser' };
-            document.getElementById('inputNama').value=''; document.getElementById('inputBayar').value='';
-            document.getElementById('trxIdDisplay').innerText = `ID: ${state.id}`;
-            document.getElementById('reprintBanner').classList.add('hidden');
-            closeCheckout(); renderUI();
-        }
-
-        window.onload = resetTransaction;
+        // Init
+        window.onload = init;
     </script>
 </body>
 </html>
